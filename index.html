@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scusi?</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="theme-color" content="#E31818">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Bottone Info in alto a sinistra -->
+        <button id="info-btn" aria-label="Informazioni sull'App">i</button>
+        
+        <!-- Vista Ricerca -->
+        <div id="search-view" class="view active">
+            <div class="header">
+                <img src="icon.svg" alt="Logo Scusi?" class="logo-img">
+                <h1 class="logo-text">Scusi?</h1>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Cosa cerca il cliente?" autocomplete="off" autocorrect="off" spellcheck="false">
+                <button id="clear-btn" aria-label="Cancella ricerca" style="display: none;">&times;</button>
+            </div>
+            <ul id="suggestions-list"></ul>
+        </div>
+        
+        <!-- Vista Risultato a Schermo Intero -->
+        <div id="result-view" class="view">
+            <div class="result-content">
+                <p id="result-matched-product"></p>
+                <p id="result-label">Si trova in</p>
+                <h1 id="result-aisle">CORSIA 1</h1>
+                <p id="result-desc">Sale, zucchero, zafferano, senza glutine e formati XXL</p>
+            </div>
+            <button id="back-btn">Nuova Ricerca</button>
+        </div>
+
+        <!-- Modale Info / Disclaimer -->
+        <div id="info-modal" class="modal">
+            <div class="modal-content">
+                <button id="close-modal-btn" aria-label="Chiudi">&times;</button>
+                <div class="modal-header">
+                    <img src="icon.svg" alt="Logo Scusi?" class="modal-logo">
+                    <h2>Scusi?</h2>
+                    <p class="version">Versione 0.9.1 (Beta) - 2026</p>
+                </div>
+                <div class="modal-body">
+                    <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti riservati / All rights reserved.</p>
+                    
+                    <p class="disclaimer-title">Disclaimer / Legal Notice</p>
+                    
+                    <p class="disclaimer-text"><strong>IT:</strong> Questa è una versione Beta, sviluppata a scopo amatoriale e non costituisce un prodotto professionale o ufficiale. Non è consentito copiare, replicare, distribuire o utilizzare l'applicazione per scopi commerciali o per utilizzi diversi da quelli previsti dai creatori. Gli autori e gli sviluppatori declinano ogni responsabilità civile, penale o legale derivante dall'uso, dal malfunzionamento o dalle inesattezze dei dati di questa applicazione. L'uso avviene a rischio esclusivo dell'utente.</p>
+                    
+                    <p class="disclaimer-text"><strong>EN:</strong> This is a Beta version, developed for amateur purposes and does not constitute a professional or official product. Copying, replicating, distributing, or using the application for commercial purposes or uses other than those intended by the creators is strictly prohibited. The authors and developers disclaim any civil, criminal, or legal liability arising from the use, malfunction, or inaccuracies of the data in this application. Use is at the user's sole risk.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
