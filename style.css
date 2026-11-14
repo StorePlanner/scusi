@@ -5,13 +5,55 @@
     --conad-gold: #FED404;
     --conad-brown: #2D1606;
     --conad-cream: #FFF8F0;
-    
-    --glass-surface: rgba(255, 255, 255, 0.62);
-    --glass-border: rgba(255, 255, 255, 0.85);
+
+    --home-bg: linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%);
+    --home-solid: #FFF8F0;
+    --text-primary: #2D1606;
+    --text-secondary: rgba(45, 22, 6, 0.68);
+    --text-placeholder: rgba(45, 22, 6, 0.42);
+    --brand-title-color: #E30613;
+    --brand-sub-color: #F06C00;
+
+    --glass-surface: rgba(255, 255, 255, 0.68);
+    --glass-card-surface: rgba(255, 255, 255, 0.76);
+    --glass-fuzzy-surface: rgba(255, 248, 225, 0.86);
+    --glass-border: rgba(255, 255, 255, 0.9);
     --glass-highlight: inset 0 1.5px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(240, 108, 0, 0.08);
-    --glass-shadow: 0 10px 32px rgba(45, 22, 6, 0.08);
-    
-    --text-color: #2D1606;
+    --glass-shadow: 0 10px 30px rgba(45, 22, 6, 0.08);
+    --search-border: rgba(240, 108, 0, 0.38);
+    --clear-bg: rgba(45, 22, 6, 0.08);
+
+    --modal-bg: rgba(255, 251, 245, 0.95);
+    --modal-border: rgba(255, 255, 255, 0.95);
+    --disclaimer-bg: rgba(240, 108, 0, 0.08);
+    --code-bg: rgba(45, 22, 6, 0.08);
+    --daisy-watermark: rgba(240, 108, 0, 0.08);
+}
+
+/* Smartphone Night Mode / Dark Mode (attivata da classe .dark-theme su <html>) */
+html.dark-theme {
+    --home-bg: linear-gradient(155deg, #140D09 0%, #1E130E 55%, #291811 100%);
+    --home-solid: #140D09;
+    --text-primary: #FFF8F0;
+    --text-secondary: rgba(255, 248, 240, 0.72);
+    --text-placeholder: rgba(255, 248, 240, 0.44);
+    --brand-title-color: #FF4D58;
+    --brand-sub-color: #FFA149;
+
+    --glass-surface: rgba(38, 24, 18, 0.72);
+    --glass-card-surface: rgba(42, 27, 20, 0.80);
+    --glass-fuzzy-surface: rgba(66, 48, 22, 0.84);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: inset 0 1.5px 1px rgba(255, 255, 255, 0.18), inset 0 -1px 2px rgba(0, 0, 0, 0.35);
+    --glass-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+    --search-border: rgba(255, 161, 73, 0.42);
+    --clear-bg: rgba(255, 248, 240, 0.14);
+
+    --modal-bg: rgba(28, 18, 14, 0.96);
+    --modal-border: rgba(255, 255, 255, 0.16);
+    --disclaimer-bg: rgba(255, 255, 255, 0.06);
+    --code-bg: rgba(255, 255, 255, 0.12);
+    --daisy-watermark: rgba(255, 161, 73, 0.07);
 }
 
 * {
@@ -22,31 +64,37 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-body, html {
+/* IMPORTANTE: html e body NON devono avere sfondi opachi che coprono #dynamic-bg */
+html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    color: var(--text-color);
-    background-color: var(--conad-cream);
+    background-color: var(--home-solid);
+    color: var(--text-primary);
+    transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
 }
 
-/* Sfondo Dinamico + Liquid Blobs Conad */
+/* Sfondo Dinamico con z-index positivo (0) così è sempre visibile */
 #dynamic-bg {
     position: fixed;
     inset: 0;
-    background: linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%);
+    background: var(--home-bg);
     transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    z-index: -3;
+    z-index: 0;
     overflow: hidden;
+    pointer-events: none;
 }
 
 .liquid-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(65px);
+    filter: blur(68px);
     opacity: 0.42;
     transition: opacity 0.4s ease;
     pointer-events: none;
+}
+html.dark-theme .liquid-blob {
+    opacity: 0.26;
 }
 .blob-red {
     width: 280px;
@@ -68,11 +116,12 @@ body, html {
     background: #FED404;
     top: 38%;
     left: 55%;
-    opacity: 0.28;
+    opacity: 0.25;
 }
 
+/* Nella schermata risultato colorata riduco i blob per far risaltare il colore puro del reparto */
 body.result-active .liquid-blob {
-    opacity: 0.12;
+    opacity: 0.08;
 }
 
 /* Margherita Watermark */
@@ -82,13 +131,17 @@ body.result-active .liquid-blob {
     height: 340px;
     bottom: -60px;
     right: -50px;
-    color: rgba(240, 108, 0, 0.08);
-    z-index: -2;
+    color: var(--daisy-watermark);
+    z-index: 1;
     pointer-events: none;
     transition: color 0.4s ease, transform 0.6s ease;
 }
-body.result-active .bg-daisy {
-    color: rgba(255, 255, 255, 0.14);
+body.result-active.is-dark-bg .bg-daisy {
+    color: rgba(255, 255, 255, 0.12);
+    transform: rotate(18deg) scale(1.06);
+}
+body.result-active.is-light-bg .bg-daisy {
+    color: rgba(30, 15, 5, 0.08);
     transform: rotate(18deg) scale(1.06);
 }
 
@@ -106,7 +159,7 @@ body.result-active .bg-daisy {
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1.5px solid rgba(255, 255, 255, 0.65);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), inset 0 1.5px 1px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14), inset 0 1.5px 1px rgba(255, 255, 255, 0.8);
 }
 
 #app-container {
@@ -116,7 +169,7 @@ body.result-active .bg-daisy {
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .view {
@@ -128,7 +181,7 @@ body.result-active .bg-daisy {
     opacity: 0;
     pointer-events: none;
     transform: scale(0.98);
-    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.28s ease, transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 1;
 }
 .view.active {
@@ -138,23 +191,24 @@ body.result-active .bg-daisy {
     z-index: 10;
 }
 
-/* Tasto Info */
-#info-btn {
+/* Bottoni superiori (Info a sinistra, Dark/Light a destra) */
+.top-icon-btn {
     position: absolute;
     top: calc(env(safe-area-inset-top, 16px) + 12px);
-    left: 20px;
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    color: var(--conad-brown);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 20;
-    transition: transform 0.2s ease, opacity 0.25s ease;
+    z-index: 25;
+    transition: transform 0.2s ease, opacity 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
-#info-btn:active { transform: scale(0.9); }
+.top-icon-btn:active { transform: scale(0.9); }
+#info-btn { left: 20px; }
+#theme-btn { right: 20px; }
 
 /* Header Conad Style */
 .header {
@@ -175,7 +229,7 @@ body.result-active .bg-daisy {
     width: 38px;
     height: 42px;
     flex-shrink: 0;
-    filter: drop-shadow(0 3px 6px rgba(240, 108, 0, 0.25));
+    filter: drop-shadow(0 3px 6px rgba(240, 108, 0, 0.28));
 }
 .brand-titles {
     display: flex;
@@ -186,14 +240,14 @@ body.result-active .bg-daisy {
     font-size: 1.85rem;
     font-weight: 800;
     line-height: 1;
-    color: var(--conad-red);
+    color: var(--brand-title-color);
     letter-spacing: -0.8px;
 }
 .brand-sub {
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 1.2px;
-    color: var(--conad-orange);
+    color: var(--brand-sub-color);
     margin-top: 2px;
 }
 
@@ -210,16 +264,16 @@ body.result-active .bg-daisy {
     width: 100%;
     border-radius: 26px;
     padding: 4px 14px 4px 18px;
-    border: 1.5px solid rgba(240, 108, 0, 0.35);
+    border: 1.5px solid var(--search-border);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .search-box:focus-within {
     border-color: var(--conad-red);
-    box-shadow: 0 14px 36px rgba(227, 6, 19, 0.14), var(--glass-highlight);
+    box-shadow: 0 14px 36px rgba(227, 6, 19, 0.16), var(--glass-highlight);
     transform: translateY(-1px);
 }
 .search-icon {
-    color: var(--conad-orange);
+    color: var(--brand-sub-color);
     margin-right: 12px;
     flex-shrink: 0;
 }
@@ -230,21 +284,21 @@ body.result-active .bg-daisy {
     border: none;
     font-size: 1.35rem;
     font-weight: 700;
-    color: var(--conad-brown);
+    color: var(--text-primary);
     padding: 15px 0;
     outline: none;
 }
 #search-input::placeholder {
-    color: rgba(45, 22, 6, 0.42);
+    color: var(--text-placeholder);
     font-weight: 600;
 }
 #clear-btn {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: rgba(45, 22, 6, 0.08);
+    background: var(--clear-bg);
     border: none;
-    color: var(--conad-brown);
+    color: var(--text-primary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -253,11 +307,10 @@ body.result-active .bg-daisy {
     margin-left: 8px;
 }
 #clear-btn:active {
-    background: rgba(45, 22, 6, 0.16);
     transform: scale(0.92);
 }
 
-/* Welcome Card con Illustrazione Ufficiale Conad */
+/* Welcome Card con Illustrazione Ufficiale */
 .welcome-card {
     width: 100%;
     max-width: 440px;
@@ -278,18 +331,18 @@ body.result-active .bg-daisy {
     max-width: 240px;
     height: auto;
     margin-bottom: 12px;
-    filter: drop-shadow(0 6px 14px rgba(45, 22, 6, 0.08));
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.14));
 }
 .welcome-title {
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--conad-red);
+    color: var(--brand-title-color);
     margin-bottom: 4px;
 }
 .welcome-sub {
     font-size: 0.9rem;
     font-weight: 600;
-    color: rgba(45, 22, 6, 0.68);
+    color: var(--text-secondary);
     line-height: 1.4;
     max-width: 300px;
 }
@@ -310,15 +363,15 @@ body.result-active .bg-daisy {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.9px;
-    color: var(--conad-orange);
+    color: var(--brand-sub-color);
     margin: 8px 6px 10px;
 }
 .suggestion-item {
-    background: rgba(255, 255, 255, 0.72);
+    background: var(--glass-card-surface);
     backdrop-filter: blur(22px) saturate(170%);
     -webkit-backdrop-filter: blur(22px) saturate(170%);
-    border: 1px solid rgba(255, 255, 255, 0.88);
-    box-shadow: 0 6px 20px rgba(45, 22, 6, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
     padding: 15px 16px;
     margin-bottom: 10px;
     border-radius: 22px;
@@ -331,11 +384,10 @@ body.result-active .bg-daisy {
 }
 .suggestion-item:active {
     transform: scale(0.97);
-    background: rgba(255, 255, 255, 0.92);
 }
 .suggestion-item.fuzzy-match {
-    background: rgba(255, 248, 225, 0.82);
-    border: 1.5px solid rgba(254, 212, 4, 0.85);
+    background: var(--glass-fuzzy-surface);
+    border: 1.5px solid rgba(254, 212, 4, 0.75);
 }
 .item-left {
     display: flex;
@@ -347,13 +399,13 @@ body.result-active .bg-daisy {
     font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
-    color: var(--conad-red);
+    color: var(--brand-title-color);
     letter-spacing: 0.5px;
 }
 .item-title {
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--conad-brown);
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -361,7 +413,7 @@ body.result-active .bg-daisy {
 .item-sub {
     font-size: 0.85rem;
     font-weight: 500;
-    color: rgba(45, 22, 6, 0.65);
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -372,9 +424,8 @@ body.result-active .bg-daisy {
     font-weight: 800;
     padding: 7px 12px;
     border-radius: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
 }
 
 /* Vista Risultato a Tutto Schermo */
@@ -382,7 +433,7 @@ body.result-active .bg-daisy {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    padding-top: calc(env(safe-area-inset-top, 20px) + 24px);
+    padding-top: calc(env(safe-area-inset-top, 20px) + 52px);
     padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
 }
 .result-content {
@@ -409,11 +460,12 @@ body.result-active .bg-daisy {
     text-transform: uppercase;
     letter-spacing: 3.5px;
     font-weight: 800;
-    opacity: 0.82;
+    opacity: 0.85;
     margin-bottom: 12px;
+    color: inherit;
 }
 
-/* Contenitore Titolo Corsia: ZERO parole spezzate a metà */
+/* Contenitore Titolo Corsia: ZERO parole spezzate e congiunzioni minuscole preservate */
 .aisle-container {
     width: 100%;
     padding: 0 8px;
@@ -425,21 +477,22 @@ body.result-active .bg-daisy {
 #result-aisle {
     font-size: 5rem;
     font-weight: 800;
-    line-height: 1.05;
+    line-height: 1.06;
     letter-spacing: -1.5px;
-    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+    color: inherit;
+    text-transform: none; /* Preserva le congiunzioni in minuscolo es. PANETTERIA e PASTICCERIA */
     hyphens: none !important;
     -webkit-hyphens: none !important;
     -ms-hyphens: none !important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
-    white-space: normal;
 }
 
 .desc-card {
     padding: 14px 22px;
     border-radius: 22px;
     max-width: 92%;
+    color: inherit;
 }
 #result-desc {
     font-size: 1.15rem;
@@ -463,26 +516,33 @@ body.result-active .bg-daisy {
     transform: scale(0.95);
 }
 
-/* Adattamento Liquid Glass su sfondi scuri */
-body.dark-mode .liquid-glass {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), inset 0 1.5px 1px rgba(255, 255, 255, 0.45);
+/* Adattamento Liquid Glass nella schermata risultato:
+   1) Sfondo reparto SCURO (testo bianco #FFFFFF) -> vetro scuro traslucido ad alto contrasto */
+body.result-active.is-dark-bg .liquid-glass {
+    background: rgba(0, 0, 0, 0.24);
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22), inset 0 1.5px 1px rgba(255, 255, 255, 0.32);
 }
-body.dark-mode .liquid-glass-btn {
-    background: rgba(255, 255, 255, 0.22);
+body.result-active.is-dark-bg .liquid-glass-btn {
+    background: rgba(0, 0, 0, 0.28);
     border-color: rgba(255, 255, 255, 0.55);
 }
-
-/* Adattamento Liquid Glass su sfondi chiari/caldi */
-body.light-result .liquid-glass {
-    background: rgba(255, 255, 255, 0.48);
-    border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 10px 28px rgba(45, 22, 6, 0.1), inset 0 1.5px 1px rgba(255, 255, 255, 0.9);
+body.result-active.is-dark-bg #result-aisle {
+    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
 }
-body.light-result .liquid-glass-btn {
-    background: rgba(255, 255, 255, 0.58);
-    border-color: rgba(255, 255, 255, 0.88);
+
+/* 2) Sfondo reparto CHIARO/BRILLANTE (es. Giallo #FED404, Azzurro #38BDF8, Turchese #00ACC1, Arancio #F06C00 -> testo scuro #1E0F05) */
+body.result-active.is-light-bg .liquid-glass {
+    background: rgba(255, 255, 255, 0.52);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 10px 28px rgba(30, 15, 5, 0.12), inset 0 1.5px 1px rgba(255, 255, 255, 0.92);
+}
+body.result-active.is-light-bg .liquid-glass-btn {
+    background: rgba(255, 255, 255, 0.62);
+    border-color: rgba(255, 255, 255, 0.92);
+}
+body.result-active.is-light-bg #result-aisle {
+    text-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
 }
 
 /* Modale Info */
@@ -490,7 +550,7 @@ body.light-result .liquid-glass-btn {
     display: none;
     position: fixed;
     inset: 0;
-    background-color: rgba(45, 22, 6, 0.45);
+    background-color: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     z-index: 100;
@@ -502,10 +562,10 @@ body.light-result .liquid-glass-btn {
 }
 .modal.show { display: flex; opacity: 1; }
 .liquid-glass-modal {
-    background: rgba(255, 251, 245, 0.94);
+    background: var(--modal-bg);
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    border: 1.5px solid var(--modal-border);
     border-radius: 32px;
     width: 100%;
     max-width: 420px;
@@ -513,8 +573,8 @@ body.light-result .liquid-glass-btn {
     overflow-y: auto;
     padding: 30px 22px;
     text-align: center;
-    color: var(--conad-brown);
-    box-shadow: 0 24px 60px rgba(45, 22, 6, 0.25);
+    color: var(--text-primary);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
     position: relative;
     animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -526,12 +586,12 @@ body.light-result .liquid-glass-btn {
     position: absolute;
     top: 16px;
     right: 16px;
-    background: rgba(45, 22, 6, 0.08);
+    background: var(--clear-bg);
     border: none;
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    color: var(--conad-brown);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -542,17 +602,17 @@ body.light-result .liquid-glass-btn {
     height: 76px;
     border-radius: 20px;
     margin-bottom: 10px;
-    box-shadow: 0 8px 20px rgba(227, 6, 19, 0.25);
+    box-shadow: 0 8px 20px rgba(227, 6, 19, 0.28);
 }
 .modal-header h2 {
     font-size: 2rem;
     font-weight: 800;
-    color: var(--conad-red);
+    color: var(--brand-title-color);
     letter-spacing: -0.8px;
 }
 .version {
     font-size: 0.85rem;
-    color: var(--conad-orange);
+    color: var(--brand-sub-color);
     font-weight: 700;
     margin-top: 2px;
     margin-bottom: 18px;
@@ -561,30 +621,29 @@ body.light-result .liquid-glass-btn {
     font-size: 0.95rem;
     line-height: 1.45;
     margin-bottom: 14px;
+    color: var(--text-primary);
 }
 .disclaimer-title {
     font-size: 1rem !important;
     font-weight: 800;
-    color: var(--conad-red) !important;
+    color: var(--brand-title-color) !important;
     margin-top: 18px;
-    border-bottom: 1.5px solid rgba(240, 108, 0, 0.2);
+    border-bottom: 1.5px solid rgba(240, 108, 0, 0.25);
     padding-bottom: 6px;
 }
 .disclaimer-text {
     font-size: 0.82rem !important;
     text-align: left;
-    background: rgba(240, 108, 0, 0.07);
+    background: var(--disclaimer-bg);
     padding: 12px 14px;
     border-radius: 16px;
     border-left: 4px solid var(--conad-orange);
 }
-
-
 .disclaimer-text p {
     font-size: 0.8rem !important;
     line-height: 1.48 !important;
     margin-bottom: 10px !important;
-    color: #2D1606 !important;
+    color: var(--text-primary) !important;
 }
 .disclaimer-text p:last-child {
     margin-bottom: 0 !important;
@@ -594,13 +653,13 @@ body.light-result .liquid-glass-btn {
     text-align: left;
     font-size: 0.78rem;
     line-height: 1.45;
-    color: #2D1606;
+    color: var(--text-primary);
 }
 .disclaimer-list li {
     margin-bottom: 6px;
 }
 .disclaimer-list code {
-    background: rgba(45, 22, 6, 0.08);
+    background: var(--code-bg);
     padding: 1px 5px;
     border-radius: 5px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
