@@ -48,6 +48,7 @@ const database = [
     { aisle: "ZONA PROMO", desc: "Zona Promozionale", keywords: ["promo", "promozioni", "offerte", "volantino", "sconti", "bancali"], colorLight: "#D90B17", colorDark: "#8A0810" }
 ];
 
+const searchBoxWrapper = document.getElementById('search-box-wrapper');
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('suggestions-list');
 const welcomeCard = document.getElementById('welcome-card');
@@ -62,36 +63,24 @@ const backBtn = document.getElementById('back-btn');
 const dynamicBg = document.getElementById('dynamic-bg');
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
-const infoBtn = document.getElementById('info-trigger');
-const themeBtn = document.getElementById('theme-btn');
-const iconMoon = document.getElementById('icon-moon');
-const iconSun = document.getElementById('icon-sun');
+const infoTrigger = document.getElementById('info-trigger');
 const infoModal = document.getElementById('info-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
 let currentActiveItem = null;
+let currentDisplayedResults = [];
 
-// Gestione Night Mode / Dark Mode (automatica di sistema + toggle manuale)
+// Gestione Night Mode / Dark Mode 100% automatica in base alle impostazioni del dispositivo
 function isDarkMode() {
     return document.documentElement.classList.contains('dark-theme');
 }
 
-function updateThemeIcons() {
-    const dark = isDarkMode();
-    iconMoon.style.display = dark ? 'none' : 'block';
-    iconSun.style.display = dark ? 'block' : 'none';
-}
-
-function applyTheme(dark, persist = false) {
+function syncSystemTheme(dark) {
     if (dark) {
         document.documentElement.classList.add('dark-theme');
     } else {
         document.documentElement.classList.remove('dark-theme');
     }
-    if (persist) {
-        localStorage.setItem('scusi_theme', dark ? 'dark' : 'light');
-    }
-    updateThemeIcons();
 
     if (resultView.classList.contains('active') && currentActiveItem) {
         showResult(currentActiveItem);
@@ -101,35 +90,82 @@ function applyTheme(dark, persist = false) {
             ? 'linear-gradient(155deg, #140D09 0%, #1E130E 55%, #291811 100%)'
             : 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
         dynamicBg.style.background = homeGrad;
-    resultView.style.backgroundColor = '';
+        resultView.style.backgroundColor = '';
         document.documentElement.style.backgroundColor = homeSolid;
         document.body.style.backgroundColor = homeSolid;
-        themeColorMeta.setAttribute('content', homeSolid);
-        // Ricarica i badge della lista se ci sono risultati visibili
+        if (themeColorMeta) themeColorMeta.setAttribute('content', homeSolid);
         if (searchInput.value.trim()) {
             searchInput.dispatchEvent(new Event('input'));
         }
     }
 }
 
-updateThemeIcons();
-
-themeBtn.addEventListener('click', () => {
-    if (navigator.vibrate) navigator.vibrate(15);
-    applyTheme(!isDarkMode(), true);
-});
+syncSystemTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
 if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('scusi_theme')) {
-            applyTheme(e.matches, false);
+        syncSystemTheme(e.matches);
+    });
+}
+
+// Modale Info / Note Legali cliccando sul logo "Scusi?"
+if (infoTrigger) {
+    infoTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (navigator.vibrate) navigator.vibrate(15);
+        infoModal.classList.add('show');
+    });
+}
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+        infoModal.classList.remove('show');
+    });
+}
+if (infoModal) {
+    infoModal.addEventListener('click', (e) => {
+        if (e.target === infoModal) infoModal.classList.remove('show');
+    });
+}
+
+// Cliccando ovunque nel box di ricerca (anche sull'icona lente) attiva subito l'input (ottimo su desktop)
+if (searchBoxWrapper) {
+    searchBoxWrapper.addEventListener('click', (e) => {
+        if (e.target !== clearBtn && !clearBtn.contains(e.target)) {
+            searchInput.focus();
         }
     });
 }
 
-infoBtn.addEventListener('click', () => { infoModal.classList.add('show'); });
-closeModalBtn.addEventListener('click', () => { infoModal.classList.remove('show'); });
-infoModal.addEventListener('click', (e) => { if(e.target === infoModal) infoModal.classList.remove('show'); });
+// Auto-focus su desktop all'apertura per scrivere subito da tastiera
+if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    window.addEventListener('load', () => {
+        searchInput.focus();
+    });
+}
+
+// Supporto tastiera completo su Desktop (Invio apre il primo risultato, Esc chiude/torna indietro)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (infoModal.classList.contains('show')) {
+            infoModal.classList.remove('show');
+        } else if (resultView.classList.contains('active')) {
+            resetSearch();
+        } else if (searchInput.value.length > 0) {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            suggestionsList.innerHTML = '';
+            currentDisplayedResults = [];
+            document.body.classList.remove('is-searching');
+            welcomeCard.classList.remove('hidden');
+            searchInput.focus();
+        }
+    } else if (e.key === 'Enter' && searchView.classList.contains('active') && !infoModal.classList.contains('show')) {
+        if (currentDisplayedResults.length > 0) {
+            e.preventDefault();
+            showResult(currentDisplayedResults[0]);
+        }
+    }
+});
 
 // Calcolo esatto della luminanza relativa WCAG (0 = nero puro, 1 = bianco puro)
 function getRelativeLuminance(hex) {
@@ -143,7 +179,6 @@ function getRelativeLuminance(hex) {
     return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
 }
 
-// Restituisce il colore del testo con il contrasto WCAG più alto (#1E0F05 su sfondi chiari, #FFFFFF su sfondi scuri)
 function getBestContrastText(bgHex) {
     const lum = getRelativeLuminance(bgHex);
     const isLight = lum > 0.34;
@@ -164,7 +199,6 @@ const LOWERCASE_WORDS = new Set([
     "dal", "dalla", "nel", "nella", "sul", "sulla"
 ]);
 
-// Formatta il nome del reparto mantenendo le congiunzioni in minuscolo (es. "PANETTERIA e PASTICCERIA")
 function formatAisleTitle(str) {
     return str.split(" ").map((word, idx) => {
         const clean = word.toLowerCase();
@@ -175,7 +209,6 @@ function formatAisleTitle(str) {
     }).join(" ");
 }
 
-// Formatta il nome prodotto con iniziale maiuscola e congiunzioni minuscole (es. "Sott'olio e sott'aceto")
 function formatProductLabel(str) {
     return str.split(" ").map((word, idx) => {
         const lower = word.toLowerCase();
@@ -189,9 +222,6 @@ function formatProductLabel(str) {
     }).join(" ");
 }
 
-// Auto-fit titolo corsia:
-// - Se ha 1 o 2 parole (es. "CORSIA 11", "ZONA PROMO") resta su UNA SOLA RIGA grande
-// - Se ha 3+ parole (es. "PANETTERIA e PASTICCERIA") va a capo pulito tra le parole senza mai spezzarle
 function fitAisleTitle() {
     const maxWidth = aisleContainer.clientWidth - 16;
     if (maxWidth <= 0) return;
@@ -226,8 +256,8 @@ window.addEventListener('resize', () => {
 });
 
 // Fuzzy matching engine
-function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
-function collapseDoubles(str) { return str.replace(/([a-z])\1+/g, "$1"); }
+function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
+function collapseDoubles(str) { return str.replace(/([a-z])+/g, "$1"); }
 function damerauLevenshtein(a, b) {
     const alen = a.length, blen = b.length;
     if (alen === 0) return blen; if (blen === 0) return alen;
@@ -339,8 +369,6 @@ function showResult(item) {
     currentActiveItem = item;
     searchView.classList.remove('active');
     
-    
-    
     resultView.classList.add('active');
     document.body.classList.add('result-active');
 
@@ -351,12 +379,11 @@ function showResult(item) {
     resultAisle.textContent = formatAisleTitle(item.aisle);
     resultDesc.textContent = item.desc;
 
-    // Applica il colore sia a #dynamic-bg che a html/body e theme-color
     dynamicBg.style.background = deptColor;
     resultView.style.backgroundColor = deptColor;
     document.documentElement.style.backgroundColor = deptColor;
     document.body.style.backgroundColor = deptColor;
-    themeColorMeta.setAttribute('content', deptColor);
+    if (themeColorMeta) themeColorMeta.setAttribute('content', deptColor);
     
     document.body.classList.remove('is-dark-bg', 'is-light-bg');
     document.body.classList.add(isLight ? 'is-light-bg' : 'is-dark-bg');
@@ -369,12 +396,10 @@ function showResult(item) {
 
 function resetSearch() {
     currentActiveItem = null;
+    currentDisplayedResults = [];
     resultView.classList.remove('active');
     searchView.classList.add('active');
-    document.body.classList.remove('result-active', 'is-dark-bg', 'is-light-bg');
-    
-    
-    
+    document.body.classList.remove('result-active', 'is-dark-bg', 'is-light-bg', 'is-searching');
 
     const dark = isDarkMode();
     const homeSolid = dark ? '#140D09' : '#FFF8F0';
@@ -386,7 +411,7 @@ function resetSearch() {
     resultView.style.backgroundColor = '';
     document.documentElement.style.backgroundColor = homeSolid;
     document.body.style.backgroundColor = homeSolid;
-    themeColorMeta.setAttribute('content', homeSolid);
+    if (themeColorMeta) themeColorMeta.setAttribute('content', homeSolid);
     document.body.style.color = '';
     resultView.style.color = '';
     
@@ -394,18 +419,21 @@ function resetSearch() {
     clearBtn.style.display = 'none';
     suggestionsList.innerHTML = '';
     welcomeCard.classList.remove('hidden');
-    setTimeout(() => searchInput.focus(), 250);
+    setTimeout(() => searchInput.focus(), 200);
 }
 
 searchInput.addEventListener('input', (e) => {
     const val = e.target.value;
     clearBtn.style.display = val.length > 0 ? 'flex' : 'none';
     suggestionsList.innerHTML = '';
+    currentDisplayedResults = [];
     
     if (!val.trim()) {
+        document.body.classList.remove('is-searching');
         welcomeCard.classList.remove('hidden');
         return;
     }
+    document.body.classList.add('is-searching');
     welcomeCard.classList.add('hidden');
 
     const { direct, fuzzy } = searchProducts(val);
@@ -413,15 +441,24 @@ searchInput.addEventListener('input', (e) => {
         const hint = document.createElement('li');
         hint.className = 'section-hint'; hint.textContent = '🤔 Forse cercavi:';
         suggestionsList.appendChild(hint);
-        fuzzy.forEach(item => suggestionsList.appendChild(createSuggestionElement(item)));
+        fuzzy.forEach(item => {
+            currentDisplayedResults.push(item);
+            suggestionsList.appendChild(createSuggestionElement(item));
+        });
         return;
     }
-    direct.forEach(item => suggestionsList.appendChild(createSuggestionElement(item)));
+    direct.forEach(item => {
+        currentDisplayedResults.push(item);
+        suggestionsList.appendChild(createSuggestionElement(item));
+    });
     if (direct.length > 0 && direct.length <= 2 && fuzzy.length > 0) {
         const hint = document.createElement('li');
         hint.className = 'section-hint'; hint.textContent = '💡 Oppure:';
         suggestionsList.appendChild(hint);
-        fuzzy.slice(0, 2).forEach(item => suggestionsList.appendChild(createSuggestionElement(item)));
+        fuzzy.slice(0, 2).forEach(item => {
+            currentDisplayedResults.push(item);
+            suggestionsList.appendChild(createSuggestionElement(item));
+        });
     }
     if (direct.length === 0 && fuzzy.length === 0) {
         const empty = document.createElement('li');
@@ -438,6 +475,8 @@ clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     clearBtn.style.display = 'none';
     suggestionsList.innerHTML = '';
+    currentDisplayedResults = [];
+    document.body.classList.remove('is-searching');
     welcomeCard.classList.remove('hidden');
     searchInput.focus();
 });
@@ -448,7 +487,7 @@ backBtn.addEventListener('click', () => {
 });
 
 resultView.addEventListener('click', (e) => {
-    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle && e.target !== themeBtn && !themeBtn.contains(e.target)) {
+    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle) {
         resetSearch();
     }
 });

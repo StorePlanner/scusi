@@ -8,47 +8,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.6?v=2.6">
+    <link rel="stylesheet" href="style.css?v=3.0">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#FFF8F0">
     <script>
-        // Applica subito il tema di sistema prima del render per evitare flash
+        // Rileva automaticamente Night Mode / Dark Mode del dispositivo prima del render
         (function() {
-            const saved = localStorage.getItem('scusi_theme');
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (saved === 'dark' || (!saved && prefersDark)) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.documentElement.classList.add('dark-theme');
             }
         })();
     </script>
 </head>
 <body>
-    <!-- Sfondo dinamico (z-index: 0, mai negativo così non viene mai coperto dal body) -->
+    <!-- Sfondo dinamico con bagliori liquidi Conad -->
     <div id="dynamic-bg">
         <div class="liquid-blob blob-red"></div>
         <div class="liquid-blob blob-orange"></div>
         <div class="liquid-blob blob-gold"></div>
     </div>
 
-    <!-- Simbolo Margherita in filigrana -->
+    <!-- Margherita Conad sfumata, decentrata ad arte tra barra di ricerca e card inferiore -->
     <svg class="bg-daisy" viewBox="0 0 33 36" fill="none" aria-hidden="true">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.747 5.819a6.71 6.71 0 0 0-4.144-.204 6.85 6.85 0 0 0-4.185 3.271 7.073 7.073 0 0 0 1.529 8.838 7.476 7.476 0 0 0-1.527 1.91 7.074 7.074 0 0 0-.92 3.493c0 2.425 1.235 4.784 3.44 6.078 1.823 1.077 3.951 1.185 5.808.494.558 3.3 3.382 5.82 6.781 5.82 3.394 0 6.215-2.518 6.774-5.814a6.725 6.725 0 0 0 4.151.198 6.85 6.85 0 0 0 4.18-3.267 7.044 7.044 0 0 0 .687-5.321 6.921 6.921 0 0 0-2.264-3.557 7.08 7.08 0 0 0 1.567-8.878 6.856 6.856 0 0 0-4.19-3.268 6.7 6.7 0 0 0-4.13.2C22.748 2.519 19.925 0 16.53 0c-3.402 0-6.227 2.52-6.782 5.819z" fill="currentColor"/>
+        <defs>
+            <linearGradient id="daisyArtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#E30613"/>
+                <stop offset="50%" stop-color="#F06C00"/>
+                <stop offset="100%" stop-color="#FED404"/>
+            </linearGradient>
+        </defs>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.747 5.819a6.71 6.71 0 0 0-4.144-.204 6.85 6.85 0 0 0-4.185 3.271 7.073 7.073 0 0 0 1.529 8.838 7.476 7.476 0 0 0-1.527 1.91 7.074 7.074 0 0 0-.92 3.493c0 2.425 1.235 4.784 3.44 6.078 1.823 1.077 3.951 1.185 5.808.494.558 3.3 3.382 5.82 6.781 5.82 3.394 0 6.215-2.518 6.774-5.814a6.725 6.725 0 0 0 4.151.198 6.85 6.85 0 0 0 4.18-3.267 7.044 7.044 0 0 0 .687-5.321 6.921 6.921 0 0 0-2.264-3.557 7.08 7.08 0 0 0 1.567-8.878 6.856 6.856 0 0 0-4.19-3.268 6.7 6.7 0 0 0-4.13.2C22.748 2.519 19.925 0 16.53 0c-3.402 0-6.227 2.52-6.782 5.819z" fill="url(#daisyArtGrad)"/>
+        <circle cx="16.53" cy="17.75" r="5.35" fill="#FED404" opacity="0.75"/>
     </svg>
     
     <div id="app-container">
-
-
-        <!-- Night / Day Mode Toggle (Alto a Destra) -->
-        <button id="theme-btn" class="liquid-glass top-icon-btn" aria-label="Cambia tema chiaro/scuro">
-            <svg id="icon-moon" viewBox="0 0 24 24" width="19" height="19" stroke="currentColor" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            <svg id="icon-sun" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-        </button>
-        
         <!-- Vista Ricerca -->
         <div id="search-view" class="view active">
             <div class="header">
-                <button id="info-trigger" class="brand-badge liquid-glass" aria-label="Informazioni sull'App">
+                <button type="button" id="info-trigger" class="brand-badge liquid-glass" aria-label="Informazioni e Note Legali">
                     <img src="conad-symbol.svg" alt="Simbolo Margherita" class="logo-daisy">
                     <div class="brand-titles">
                         <h1 class="logo-text">Scusi?</h1>
@@ -58,10 +56,10 @@
             </div>
             
             <div class="search-box-container">
-                <div class="search-box liquid-glass">
+                <div class="search-box liquid-glass" id="search-box-wrapper">
                     <svg class="search-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" id="search-input" placeholder="Cosa cerchi?" autocomplete="off" autocorrect="off" spellcheck="false">
-                    <button id="clear-btn" aria-label="Cancella" style="display: none;">
+                    <input type="text" id="search-input" placeholder="Cosa cerca il cliente?" autocomplete="off" autocorrect="off" spellcheck="false">
+                    <button type="button" id="clear-btn" aria-label="Cancella" style="display: none;">
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
@@ -69,11 +67,11 @@
 
             <ul id="suggestions-list"></ul>
 
-            <!-- Card di benvenuto ancorata in basso -->
+            <!-- Card di benvenuto ancorata in basso così lascia libero il fiore al centro -->
             <div id="welcome-card" class="welcome-card liquid-glass">
                 <img src="conad-hero.png" alt="Illustrazione Assistenza Clienti" class="welcome-hero-img">
                 <p class="welcome-title">Dove si trova?</p>
-                <p class="welcome-sub">Scrivi un prodotto per visualizzare la corsia.</p>
+                <p class="welcome-sub">Scrivi un prodotto nella barra in alto per visualizzare subito corsia e reparto.</p>
             </div>
         </div>
         
@@ -91,19 +89,19 @@
                     <p id="result-desc">Sale, zucchero, zafferano, senza glutine e formati XXL</p>
                 </div>
             </div>
-            <button id="back-btn" class="liquid-glass-btn">Nuova Ricerca</button>
+            <button type="button" id="back-btn" class="liquid-glass-btn">Nuova Ricerca</button>
         </div>
 
         <!-- Modale Info / Disclaimer Legale Completo -->
         <div id="info-modal" class="modal">
             <div class="modal-content liquid-glass-modal">
-                <button id="close-modal-btn" aria-label="Chiudi">
+                <button type="button" id="close-modal-btn" aria-label="Chiudi">
                     <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
                 <div class="modal-header">
                     <img src="icon-192.png" alt="Logo Scusi?" class="modal-logo">
                     <h2>Scusi?</h2>
-                    <p class="version">Versione 2.6.0 (Light &amp; Dark Liquid Glass) • 2026</p>
+                    <p class="version">Versione 3.0.0 (Auto Dark Mode • Liquid Glass) • 2026</p>
                 </div>
                 <div class="modal-body">
                     <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti sul codice sorgente riservati / All source code rights reserved.</p>
@@ -136,6 +134,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js?v=2.6?v=2.6"></script>
+    <script src="script.js?v=3.0"></script>
 </body>
 </html>
