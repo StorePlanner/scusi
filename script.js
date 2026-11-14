@@ -63,35 +63,22 @@ const dynamicBg = document.getElementById('dynamic-bg');
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
 const infoBtn = document.getElementById('info-btn');
-const themeBtn = document.getElementById('theme-btn');
-const iconMoon = document.getElementById('icon-moon');
-const iconSun = document.getElementById('icon-sun');
 const infoModal = document.getElementById('info-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
 let currentActiveItem = null;
 
-// Gestione Night Mode / Dark Mode (automatica di sistema + toggle manuale)
+// Gestione Night Mode / Dark Mode 100% automatica in base alle impostazioni dello smartphone
 function isDarkMode() {
     return document.documentElement.classList.contains('dark-theme');
 }
 
-function updateThemeIcons() {
-    const dark = isDarkMode();
-    iconMoon.style.display = dark ? 'none' : 'block';
-    iconSun.style.display = dark ? 'block' : 'none';
-}
-
-function applyTheme(dark, persist = false) {
+function syncSystemTheme(dark) {
     if (dark) {
         document.documentElement.classList.add('dark-theme');
     } else {
         document.documentElement.classList.remove('dark-theme');
     }
-    if (persist) {
-        localStorage.setItem('scusi_theme', dark ? 'dark' : 'light');
-    }
-    updateThemeIcons();
 
     if (resultView.classList.contains('active') && currentActiveItem) {
         showResult(currentActiveItem);
@@ -101,29 +88,23 @@ function applyTheme(dark, persist = false) {
             ? 'linear-gradient(155deg, #140D09 0%, #1E130E 55%, #291811 100%)'
             : 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
         dynamicBg.style.background = homeGrad;
-    resultView.style.backgroundColor = '';
+        resultView.style.backgroundColor = '';
         document.documentElement.style.backgroundColor = homeSolid;
         document.body.style.backgroundColor = homeSolid;
         themeColorMeta.setAttribute('content', homeSolid);
-        // Ricarica i badge della lista se ci sono risultati visibili
         if (searchInput.value.trim()) {
             searchInput.dispatchEvent(new Event('input'));
         }
     }
 }
 
-updateThemeIcons();
+// Sincronizza subito allo startup
+syncSystemTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-themeBtn.addEventListener('click', () => {
-    if (navigator.vibrate) navigator.vibrate(15);
-    applyTheme(!isDarkMode(), true);
-});
-
+// Ascolta in tempo reale eventuali cambi tra modalità giorno/notte del telefono
 if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('scusi_theme')) {
-            applyTheme(e.matches, false);
-        }
+        syncSystemTheme(e.matches);
     });
 }
 
@@ -448,7 +429,7 @@ backBtn.addEventListener('click', () => {
 });
 
 resultView.addEventListener('click', (e) => {
-    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle && e.target !== themeBtn && !themeBtn.contains(e.target)) {
+    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle) {
         resetSearch();
     }
 });

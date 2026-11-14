@@ -191,7 +191,7 @@ body.result-active.is-light-bg .bg-daisy {
     z-index: 10;
 }
 
-/* Bottoni superiori (Info a sinistra, Dark/Light a destra) */
+/* Bottone superiore Info */
 .top-icon-btn {
     position: absolute;
     top: calc(env(safe-area-inset-top, 16px) + 12px);
@@ -208,7 +208,6 @@ body.result-active.is-light-bg .bg-daisy {
 }
 .top-icon-btn:active { transform: scale(0.9); }
 #info-btn { left: 20px; }
-#theme-btn { right: 20px; }
 
 /* Header Conad Style */
 .header {
