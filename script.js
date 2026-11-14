@@ -65,7 +65,6 @@ const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
 const infoTrigger = document.getElementById('info-trigger');
 const infoModal = document.getElementById('info-modal');
-const modalScroll = document.getElementById('modal-scroll');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
 let currentActiveItem = null;
@@ -109,19 +108,16 @@ if (window.matchMedia) {
     });
 }
 
-// Modale Info / QR Condivisione / Note Legali cliccando sul logo "Scusi?"
+// Modale Info / Note Legali cliccando sul logo "Scusi?"
 if (infoTrigger) {
     infoTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
-        searchInput.blur();
         if (navigator.vibrate) navigator.vibrate(15);
-        if (modalScroll) modalScroll.scrollTop = 0;
         infoModal.classList.add('show');
     });
 }
 if (closeModalBtn) {
     closeModalBtn.addEventListener('click', () => {
-        if (navigator.vibrate) navigator.vibrate(12);
         infoModal.classList.remove('show');
     });
 }
@@ -131,25 +127,7 @@ if (infoModal) {
     });
 }
 
-// Chiudi automaticamente la tastiera dello smartphone toccando qualsiasi area vuota dell'app
-document.addEventListener('pointerdown', (e) => {
-    if (document.activeElement === searchInput) {
-        if (!searchBoxWrapper.contains(e.target)) {
-            searchInput.blur();
-        }
-    }
-});
-
-// Chiudi la tastiera anche quando si scorre con il dito la lista dei risultati
-if (suggestionsList) {
-    suggestionsList.addEventListener('touchmove', () => {
-        if (document.activeElement === searchInput) {
-            searchInput.blur();
-        }
-    }, { passive: true });
-}
-
-// Cliccando ovunque nel box di ricerca (anche sull'icona lente) attiva subito l'input
+// Cliccando ovunque nel box di ricerca (anche sull'icona lente) attiva subito l'input (ottimo su desktop)
 if (searchBoxWrapper) {
     searchBoxWrapper.addEventListener('click', (e) => {
         if (e.target !== clearBtn && !clearBtn.contains(e.target)) {
@@ -278,8 +256,8 @@ window.addEventListener('resize', () => {
 });
 
 // Fuzzy matching engine
-function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
-function collapseDoubles(str) { return str.replace(/([a-z])\1+/g, "$1"); }
+function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
+function collapseDoubles(str) { return str.replace(/([a-z])+/g, "$1"); }
 function damerauLevenshtein(a, b) {
     const alen = a.length, blen = b.length;
     if (alen === 0) return blen; if (blen === 0) return alen;
@@ -513,98 +491,3 @@ resultView.addEventListener('click', (e) => {
         resetSearch();
     }
 });
-
-// ==========================================
-// Registrazione Service Worker (Offline Corsia) + Installazione Rapida Home
-// ==========================================
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
-}
-
-const installBanner = document.getElementById('install-banner');
-const installBannerText = document.getElementById('install-banner-text');
-const installActionBtn = document.getElementById('install-action-btn');
-const dismissInstallBtn = document.getElementById('dismiss-install-btn');
-let deferredInstallPrompt = null;
-
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-const isDismissed = sessionStorage.getItem('scusi_install_dismissed') === '1';
-
-if (!isStandalone && !isDismissed && installBanner) {
-    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    if (isIos) {
-        installBannerText.innerHTML = 'Salva su Home: tocca <strong>Condividi</strong> (quadrato con freccia) &rarr; <strong>Aggiungi a schermata Home</strong>';
-        installBanner.style.display = 'flex';
-    }
-}
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
-    if (!isStandalone && !isDismissed && installBanner) {
-        installBannerText.textContent = 'Aggiungi Scusi? alla schermata Home con un tocco:';
-        installActionBtn.style.display = 'inline-block';
-        installBanner.style.display = 'flex';
-    }
-});
-
-if (installActionBtn) {
-    installActionBtn.addEventListener('click', async () => {
-        if (!deferredInstallPrompt) return;
-        deferredInstallPrompt.prompt();
-        const { outcome } = await deferredInstallPrompt.userChoice;
-        if (outcome === 'accepted') {
-            installBanner.style.display = 'none';
-        }
-        deferredInstallPrompt = null;
-    });
-}
-
-if (dismissInstallBtn) {
-    dismissInstallBtn.addEventListener('click', () => {
-        installBanner.style.display = 'none';
-        sessionStorage.setItem('scusi_install_dismissed', '1');
-    });
-}
-
-window.addEventListener('appinstalled', () => {
-    if (installBanner) installBanner.style.display = 'none';
-});
-
-searchInput.addEventListener('input', () => {
-    if (!installBanner) return;
-    if (searchInput.value.trim()) {
-        installBanner.style.display = 'none';
-    } else if (!isStandalone && sessionStorage.getItem('scusi_install_dismissed') !== '1' && installBannerText.innerHTML !== '') {
-        installBanner.style.display = 'flex';
-    }
-});
-
-// Pulsante "Copia Link" nel modale QR
-const copyLinkBtn = document.getElementById('copy-link-btn');
-const copyLinkText = document.getElementById('copy-link-text');
-const APP_PUBLIC_URL = 'https://storeplanner.github.io/scusi/';
-
-if (copyLinkBtn) {
-    copyLinkBtn.addEventListener('click', async () => {
-        if (navigator.vibrate) navigator.vibrate(20);
-        try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(APP_PUBLIC_URL);
-            } else {
-                const tmp = document.createElement('input');
-                tmp.value = APP_PUBLIC_URL;
-                document.body.appendChild(tmp);
-                tmp.select();
-                document.execCommand('copy');
-                document.body.removeChild(tmp);
-            }
-            copyLinkText.textContent = 'Link copiato!';
-            setTimeout(() => { copyLinkText.textContent = 'Copia Link'; }, 2200);
-        } catch (err) {
-            copyLinkText.textContent = APP_PUBLIC_URL;
-        }
-    });
-}
