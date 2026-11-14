@@ -2,60 +2,74 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Scusi?</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="theme-color" content="#E31818">
+    <meta name="theme-color" content="#f2f2f7">
 </head>
 <body>
+    <div id="dynamic-bg"></div>
+    <div class="glass-overlay"></div>
+    
     <div id="app-container">
-        <!-- Bottone Info in alto a sinistra -->
-        <button id="info-btn" aria-label="Informazioni sull'App">i</button>
+        <!-- Info Button -->
+        <button id="info-btn" class="glass-panel" aria-label="Informazioni sull'App">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </button>
         
-        <!-- Vista Ricerca -->
+        <!-- Search View -->
         <div id="search-view" class="view active">
             <div class="header">
-                <img src="icon.svg" alt="Logo Scusi?" class="logo-img">
+                <img src="icon.svg" alt="Logo" class="logo-img">
                 <h1 class="logo-text">Scusi?</h1>
             </div>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Cosa cerca il cliente?" autocomplete="off" autocorrect="off" spellcheck="false">
-                <button id="clear-btn" aria-label="Cancella ricerca" style="display: none;">&times;</button>
+            
+            <div class="search-box-container">
+                <div class="search-box glass-panel">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Cosa cerchi?" autocomplete="off" autocorrect="off" spellcheck="false">
+                    <button id="clear-btn" aria-label="Cancella">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
             </div>
+            
             <ul id="suggestions-list"></ul>
         </div>
         
-        <!-- Vista Risultato a Schermo Intero -->
+        <!-- Result View -->
         <div id="result-view" class="view">
             <div class="result-content">
-                <p id="result-matched-product"></p>
-                <p id="result-label">Si trova in</p>
-                <h1 id="result-aisle">CORSIA 1</h1>
+                <div class="pill-matched glass-panel" id="result-matched-product"></div>
+                <p id="result-label">SI TROVA IN</p>
+                
+                <!-- Aisle Title wrapper that allows natural word breaking -->
+                <div class="aisle-container">
+                    <h1 id="result-aisle">CORSIA 1</h1>
+                </div>
+                
                 <p id="result-desc">Sale, zucchero, zafferano, senza glutine e formati XXL</p>
             </div>
-            <button id="back-btn">Nuova Ricerca</button>
+            <button id="back-btn" class="glass-panel-btn">Nuova Ricerca</button>
         </div>
 
-        <!-- Modale Info / Disclaimer -->
+        <!-- Info Modal -->
         <div id="info-modal" class="modal">
-            <div class="modal-content">
-                <button id="close-modal-btn" aria-label="Chiudi">&times;</button>
+            <div class="modal-content glass-panel-modal">
+                <button id="close-modal-btn" aria-label="Chiudi">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
                 <div class="modal-header">
                     <img src="icon.svg" alt="Logo Scusi?" class="modal-logo">
                     <h2>Scusi?</h2>
-                    <p class="version">Versione 0.9.1 (Beta) - 2026</p>
+                    <p class="version">Versione 1.0.0 - 2026</p>
                 </div>
                 <div class="modal-body">
-                    <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti riservati / All rights reserved.</p>
-                    
-                    <p class="disclaimer-title">Disclaimer / Legal Notice</p>
-                    
-                    <p class="disclaimer-text"><strong>IT:</strong> Questa è una versione Beta, sviluppata a scopo amatoriale e non costituisce un prodotto professionale o ufficiale. Non è consentito copiare, replicare, distribuire o utilizzare l'applicazione per scopi commerciali o per utilizzi diversi da quelli previsti dai creatori. Gli autori e gli sviluppatori declinano ogni responsabilità civile, penale o legale derivante dall'uso, dal malfunzionamento o dalle inesattezze dei dati di questa applicazione. L'uso avviene a rischio esclusivo dell'utente.</p>
-                    
-                    <p class="disclaimer-text"><strong>EN:</strong> This is a Beta version, developed for amateur purposes and does not constitute a professional or official product. Copying, replicating, distributing, or using the application for commercial purposes or uses other than those intended by the creators is strictly prohibited. The authors and developers disclaim any civil, criminal, or legal liability arising from the use, malfunction, or inaccuracies of the data in this application. Use is at the user's sole risk.</p>
+                    <p><strong>App progettata da Massimo Maggipinto<br>per Marco Campedelli.</strong></p>
+                    <p class="disclaimer-text"><strong>Disclaimer:</strong> Sviluppata a scopo amatoriale. Non costituisce un prodotto professionale. Gli sviluppatori declinano ogni responsabilità per eventuali inesattezze.</p>
                 </div>
             </div>
         </div>
