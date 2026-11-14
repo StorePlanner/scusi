@@ -62,23 +62,36 @@ const backBtn = document.getElementById('back-btn');
 const dynamicBg = document.getElementById('dynamic-bg');
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
-const infoBtn = document.getElementById('info-btn');
+const infoBtn = document.getElementById('info-trigger');
+const themeBtn = document.getElementById('theme-btn');
+const iconMoon = document.getElementById('icon-moon');
+const iconSun = document.getElementById('icon-sun');
 const infoModal = document.getElementById('info-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
 let currentActiveItem = null;
 
-// Gestione Night Mode / Dark Mode 100% automatica in base alle impostazioni dello smartphone
+// Gestione Night Mode / Dark Mode (automatica di sistema + toggle manuale)
 function isDarkMode() {
     return document.documentElement.classList.contains('dark-theme');
 }
 
-function syncSystemTheme(dark) {
+function updateThemeIcons() {
+    const dark = isDarkMode();
+    iconMoon.style.display = dark ? 'none' : 'block';
+    iconSun.style.display = dark ? 'block' : 'none';
+}
+
+function applyTheme(dark, persist = false) {
     if (dark) {
         document.documentElement.classList.add('dark-theme');
     } else {
         document.documentElement.classList.remove('dark-theme');
     }
+    if (persist) {
+        localStorage.setItem('scusi_theme', dark ? 'dark' : 'light');
+    }
+    updateThemeIcons();
 
     if (resultView.classList.contains('active') && currentActiveItem) {
         showResult(currentActiveItem);
@@ -88,23 +101,29 @@ function syncSystemTheme(dark) {
             ? 'linear-gradient(155deg, #140D09 0%, #1E130E 55%, #291811 100%)'
             : 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
         dynamicBg.style.background = homeGrad;
-        resultView.style.backgroundColor = '';
+    resultView.style.backgroundColor = '';
         document.documentElement.style.backgroundColor = homeSolid;
         document.body.style.backgroundColor = homeSolid;
         themeColorMeta.setAttribute('content', homeSolid);
+        // Ricarica i badge della lista se ci sono risultati visibili
         if (searchInput.value.trim()) {
             searchInput.dispatchEvent(new Event('input'));
         }
     }
 }
 
-// Sincronizza subito allo startup
-syncSystemTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+updateThemeIcons();
 
-// Ascolta in tempo reale eventuali cambi tra modalità giorno/notte del telefono
+themeBtn.addEventListener('click', () => {
+    if (navigator.vibrate) navigator.vibrate(15);
+    applyTheme(!isDarkMode(), true);
+});
+
 if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        syncSystemTheme(e.matches);
+        if (!localStorage.getItem('scusi_theme')) {
+            applyTheme(e.matches, false);
+        }
     });
 }
 
@@ -319,8 +338,8 @@ function createSuggestionElement(item) {
 function showResult(item) {
     currentActiveItem = item;
     searchView.classList.remove('active');
-    infoBtn.style.opacity = '0';
-    setTimeout(() => { infoBtn.style.display = 'none'; }, 220);
+    
+    
     
     resultView.classList.add('active');
     document.body.classList.add('result-active');
@@ -354,8 +373,8 @@ function resetSearch() {
     searchView.classList.add('active');
     document.body.classList.remove('result-active', 'is-dark-bg', 'is-light-bg');
     
-    infoBtn.style.display = 'flex';
-    setTimeout(() => { infoBtn.style.opacity = '1'; }, 10);
+    
+    
 
     const dark = isDarkMode();
     const homeSolid = dark ? '#140D09' : '#FFF8F0';
@@ -429,7 +448,7 @@ backBtn.addEventListener('click', () => {
 });
 
 resultView.addEventListener('click', (e) => {
-    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle) {
+    if (e.target !== backBtn && e.target !== resultMatchedProduct && e.target !== resultAisle && e.target !== themeBtn && !themeBtn.contains(e.target)) {
         resetSearch();
     }
 });

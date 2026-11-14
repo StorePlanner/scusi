@@ -124,25 +124,26 @@ body.result-active .liquid-blob {
     opacity: 0.08;
 }
 
-/* Margherita Watermark */
+/* Margherita Watermark - Spostata al centro tra search e welcome */
 .bg-daisy {
     position: fixed;
-    width: 310px;
-    height: 340px;
-    bottom: -60px;
-    right: -50px;
+    width: 320px;
+    height: 350px;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
     color: var(--daisy-watermark);
     z-index: 1;
     pointer-events: none;
-    transition: color 0.4s ease, transform 0.6s ease;
+    transition: color 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 body.result-active.is-dark-bg .bg-daisy {
     color: rgba(255, 255, 255, 0.12);
-    transform: rotate(18deg) scale(1.06);
+    transform: translate(-50%, -50%) rotate(18deg) scale(1.06);
 }
 body.result-active.is-light-bg .bg-daisy {
     color: rgba(30, 15, 5, 0.08);
-    transform: rotate(18deg) scale(1.06);
+    transform: translate(-50%, -50%) rotate(18deg) scale(1.06);
 }
 
 /* Apple Liquid Glass Material */
@@ -191,7 +192,7 @@ body.result-active.is-light-bg .bg-daisy {
     z-index: 10;
 }
 
-/* Bottone superiore Info */
+/* Bottoni superiori (Info a sinistra, Dark/Light a destra) */
 .top-icon-btn {
     position: absolute;
     top: calc(env(safe-area-inset-top, 16px) + 12px);
@@ -208,6 +209,7 @@ body.result-active.is-light-bg .bg-daisy {
 }
 .top-icon-btn:active { transform: scale(0.9); }
 #info-btn { left: 20px; }
+#theme-btn { right: 20px; }
 
 /* Header Conad Style */
 .header {
@@ -219,6 +221,12 @@ body.result-active.is-light-bg .bg-daisy {
 }
 .brand-badge {
     display: flex;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    align-items: center;
     align-items: center;
     gap: 12px;
     padding: 8px 22px 8px 14px;
@@ -313,7 +321,7 @@ body.result-active.is-light-bg .bg-daisy {
 .welcome-card {
     width: 100%;
     max-width: 440px;
-    margin: 22px auto 0;
+    margin: auto auto 30px; /* Spinge verso il basso */
     padding: 20px 20px 24px;
     border-radius: 28px;
     text-align: center;
@@ -327,7 +335,7 @@ body.result-active.is-light-bg .bg-daisy {
 }
 .welcome-hero-img {
     width: 100%;
-    max-width: 240px;
+    max-width: 200px;
     height: auto;
     margin-bottom: 12px;
     filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.14));
@@ -664,4 +672,8 @@ body.result-active.is-light-bg #result-aisle {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.74rem;
     word-break: break-all;
+}
+
+.brand-badge:active {
+    transform: scale(0.96);
 }
