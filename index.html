@@ -3,73 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Scusi?</title>
+    <title>Scusi? • Guida Corsie</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="theme-color" content="#f2f2f7">
+    <meta name="theme-color" content="#FFF8F0">
 </head>
 <body>
-    <div id="dynamic-bg"></div>
-    <div class="glass-overlay"></div>
+    <!-- Sfondo dinamico con bagliori liquidi -->
+    <div id="dynamic-bg">
+        <div class="liquid-blob blob-red"></div>
+        <div class="liquid-blob blob-orange"></div>
+        <div class="liquid-blob blob-gold"></div>
+    </div>
+
+    <!-- Simbolo Margherita in filigrana -->
+    <svg class="bg-daisy" viewBox="0 0 33 36" fill="none" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.747 5.819a6.71 6.71 0 0 0-4.144-.204 6.85 6.85 0 0 0-4.185 3.271 7.073 7.073 0 0 0 1.529 8.838 7.476 7.476 0 0 0-1.527 1.91 7.074 7.074 0 0 0-.92 3.493c0 2.425 1.235 4.784 3.44 6.078 1.823 1.077 3.951 1.185 5.808.494.558 3.3 3.382 5.82 6.781 5.82 3.394 0 6.215-2.518 6.774-5.814a6.725 6.725 0 0 0 4.151.198 6.85 6.85 0 0 0 4.18-3.267 7.044 7.044 0 0 0 .687-5.321 6.921 6.921 0 0 0-2.264-3.557 7.08 7.08 0 0 0 1.567-8.878 6.856 6.856 0 0 0-4.19-3.268 6.7 6.7 0 0 0-4.13.2C22.748 2.519 19.925 0 16.53 0c-3.402 0-6.227 2.52-6.782 5.819z" fill="currentColor"/>
+    </svg>
     
     <div id="app-container">
-        <!-- Info Button -->
-        <button id="info-btn" class="glass-panel" aria-label="Informazioni sull'App">
+        <!-- Info Button Liquid Glass -->
+        <button id="info-btn" class="liquid-glass" aria-label="Informazioni e Note Legali">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
         </button>
         
-        <!-- Search View -->
+        <!-- Vista Ricerca -->
         <div id="search-view" class="view active">
             <div class="header">
-                <img src="icon.svg" alt="Logo" class="logo-img">
-                <h1 class="logo-text">Scusi?</h1>
+                <div class="brand-badge liquid-glass">
+                    <img src="conad-symbol.svg" alt="Simbolo Margherita" class="logo-daisy">
+                    <div class="brand-titles">
+                        <h1 class="logo-text">Scusi?</h1>
+                        <span class="brand-sub">GUIDA CORSIE • PUNTO VENDITA</span>
+                    </div>
+                </div>
             </div>
             
             <div class="search-box-container">
-                <div class="search-box glass-panel">
-                    <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" id="search-input" placeholder="Cosa cerchi?" autocomplete="off" autocorrect="off" spellcheck="false">
-                    <button id="clear-btn" aria-label="Cancella">
+                <div class="search-box liquid-glass">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Cosa cerca il cliente?" autocomplete="off" autocorrect="off" spellcheck="false">
+                    <button id="clear-btn" aria-label="Cancella" style="display: none;">
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
+            </div>
+
+            <!-- Card di benvenuto -->
+            <div id="welcome-card" class="welcome-card liquid-glass">
+                <img src="conad-hero.png" alt="Illustrazione Assistenza Clienti" class="welcome-hero-img">
+                <p class="welcome-title">Dove si trova?</p>
+                <p class="welcome-sub">Scrivi un prodotto nella barra qui sopra per visualizzare subito corsia e reparto.</p>
             </div>
             
             <ul id="suggestions-list"></ul>
         </div>
         
-        <!-- Result View -->
+        <!-- Vista Risultato a Schermo Intero -->
         <div id="result-view" class="view">
             <div class="result-content">
-                <div class="pill-matched glass-panel" id="result-matched-product"></div>
+                <div class="pill-matched liquid-glass" id="result-matched-product"></div>
                 <p id="result-label">SI TROVA IN</p>
                 
-                <!-- Aisle Title wrapper that allows natural word breaking -->
-                <div class="aisle-container">
+                <div class="aisle-container" id="aisle-container">
                     <h1 id="result-aisle">CORSIA 1</h1>
                 </div>
                 
-                <p id="result-desc">Sale, zucchero, zafferano, senza glutine e formati XXL</p>
+                <div class="desc-card liquid-glass">
+                    <p id="result-desc">Sale, zucchero, zafferano, senza glutine e formati XXL</p>
+                </div>
             </div>
-            <button id="back-btn" class="glass-panel-btn">Nuova Ricerca</button>
+            <button id="back-btn" class="liquid-glass-btn">Nuova Ricerca</button>
         </div>
 
-        <!-- Info Modal -->
+        <!-- Modale Info / Disclaimer Legale Completo -->
         <div id="info-modal" class="modal">
-            <div class="modal-content glass-panel-modal">
+            <div class="modal-content liquid-glass-modal">
                 <button id="close-modal-btn" aria-label="Chiudi">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
                 <div class="modal-header">
-                    <img src="icon.svg" alt="Logo Scusi?" class="modal-logo">
+                    <img src="icon-192.png" alt="Logo Scusi?" class="modal-logo">
                     <h2>Scusi?</h2>
-                    <p class="version">Versione 1.0.0 - 2026</p>
+                    <p class="version">Versione 2.2.0 (Beta Amatoriale) • 2026</p>
                 </div>
                 <div class="modal-body">
-                    <p><strong>App progettata da Massimo Maggipinto<br>per Marco Campedelli.</strong></p>
-                    <p class="disclaimer-text"><strong>Disclaimer:</strong> Sviluppata a scopo amatoriale. Non costituisce un prodotto professionale. Gli sviluppatori declinano ogni responsabilità per eventuali inesattezze.</p>
+                    <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti sul codice sorgente riservati / All source code rights reserved.</p>
+                    
+                    <p class="disclaimer-title">Note Legali, Marchi e Disclaimer / Legal &amp; IP Notice</p>
+                    
+                    <div class="disclaimer-text">
+                        <p><strong>IT – Titolarità dei Marchi e Origine degli Asset Grafici:</strong><br>
+                        Il marchio <strong>CONAD</strong>, il simbolo della Margherita e le relative illustrazioni sono marchi registrati, opere dell'ingegno protette dal diritto d'autore (L. 633/1941 e D.Lgs. 30/2005 – Codice della Proprietà Industriale) e di <strong>esclusiva proprietà e licenza di CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna) e delle relative cooperative/licenziatari.<br><br>
+                        Nello specifico, i seguenti elementi grafici integrati nell'interfaccia sono stati prelevati in quanto pubblicamente accessibili e visibili all'interno del codice sorgente HTML e delle risorse pubbliche del sito istituzionale <em>www.conad.it</em>:
+                        </p>
+                        <ul class="disclaimer-list">
+                            <li><code>conad-symbol.svg</code> (simbolo vettoriale della Margherita Conad, disponibile pubblicamente su <code>conad.it/assets/icons/conad-symbol.svg</code>);</li>
+                            <li><code>illu_conad_it_thank you page.png</code> (illustrazione editoriale rinominata localmente <code>conad-hero.png</code> con la sola rimozione dello sfondo bianco, disponibile pubblicamente su <code>conad.it/assets/images/illustrazioni_2022/</code>).</li>
+                        </ul>
+                        <p><strong>Assenza di Autorizzazione, Affiliazione e Scopo Amatoriale:</strong><br>
+                        L'autore dell'applicazione (Massimo Maggipinto) dichiara espressamente di <strong>non possedere alcuna licenza, autorizzazione esplicita, concessione o delega</strong> da parte di CONAD per l'utilizzo di tali marchi e file grafici, né esiste alcun rapporto di affiliazione, partenariato, sponsorizzazione o approvazione ufficiale da parte di CONAD nei confronti di questa Web App.<br>
+                        Tali risorse vengono impiegate <strong>unicamente a titolo illustrativo, nominativo e descrittivo</strong> per contestualizzare l'ambiente di lavoro interno e facilitare l'orientamento tra le corsie, senza alcun fine di lucro, commercializzazione, distribuzione al pubblico o contraffazione (uso referenziale e non commerciale). È severamente vietato copiare, replicare o utilizzare l'app per scopi commerciali o diversi dall'uso strettamente amatoriale.<br><br>
+                        <strong>Esclusione di Responsabilità e Rimozione:</strong><br>
+                        Questa è una versione Beta amatoriale fornita <em>"così com'è"</em>: l'autore declina ogni responsabilità civile, penale, amministrativa o legale derivante dall'uso, da eventuali malfunzionamenti o da inesattezze nella mappatura delle corsie. Su semplice richiesta del titolare dei diritti (CONAD), ogni elemento grafico protetto verrà immediatamente rimosso.</p>
+                    </div>
+
+                    <div class="disclaimer-text" style="margin-top: 12px;">
+                        <p><strong>EN – Trademarks, Copyright &amp; Legal Disclaimer:</strong><br>
+                        The <strong>CONAD</strong> trademark, the Daisy symbol, and related artwork are registered trademarks and copyrighted works owned exclusively by <strong>CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna, Italy) and its affiliates.<br><br>
+                        Specifically, the following graphic assets used in this app were retrieved as publicly accessible files within the public HTML source code of <em>www.conad.it</em>: <code>conad-symbol.svg</code> and <code>illu_conad_it_thank you page.png</code> (locally adapted as <code>conad-hero.png</code>).<br><br>
+                        The developer (Massimo Maggipinto) holds <strong>no explicit permission, license, or official endorsement</strong> from CONAD, and this app has no official affiliation with CONAD. These assets are used solely for nominative, descriptive, and illustrative identification within a strictly amateur, non-commercial internal support tool. Commercial use, copying, or redistribution is strictly prohibited. Provided "as is" in Beta: the author disclaims all civil, criminal, or legal liability, and will immediately remove any proprietary asset upon request by the rights holder.</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,59 +1,61 @@
 
 const database = [
-    { aisle: "ORTOFRUTTA", desc: "Frutta e verdura", keywords: ["frutta", "verdura", "ortaggi", "ortofrutta", "insalata", "mele", "banane", "pomodori", "patate", "cipolle", "zucchine", "carote", "arance", "limoni"], color: "#34C759" },
-    { aisle: "GASTRONOMIA", desc: "Piatti pronti e rosticceria", keywords: ["gastronomia", "piatti pronti", "rosticceria", "pollo allo spiedo", "fritto", "lasagne", "parmigiana", "insalata russa"], color: "#FF9500" },
-    { aisle: "PANETTERIA E PASTICCERIA", desc: "Pane fresco e dolci", keywords: ["pane", "pane fresco", "panetteria", "pasticceria", "dolci freschi", "torte", "pizze", "focacce", "brioches", "cornetti"], color: "#FFCC00" },
-    { aisle: "MACELLERIA", desc: "Carne fresca", keywords: ["carne", "macelleria", "fettine", "hamburger", "salsicce", "pollo", "maiale", "manzo", "bistecca", "macinato", "arrosto"], color: "#FF3B30" },
-    { aisle: "PESCHERIA", desc: "Pesce fresco", keywords: ["pesce", "pescheria", "frutti di mare", "salmone", "gamberi", "branzino", "orata", "cozze", "vongole", "calamari"], color: "#007AFF" },
-    { aisle: "CORSIA 1", desc: "Sale, zucchero, zafferano, senza glutine e formati XXL", keywords: ["sale", "sale fino", "sale grosso", "zucchero", "zucchero di canna", "zucchero a velo", "zafferano", "senza glutine", "celiaci", "formati xxl", "grandi formati", "dolcificante"], color: "#FFCC00" },
-    { aisle: "CORSIA 2", desc: "Surgelati", keywords: ["surgelati", "gelati", "piselli", "pesce surgelato", "pizze surgelate", "patatine surgelate", "minestrone", "sofficini", "bastoncini", "spinaci"], color: "#5AC8FA" },
-    { aisle: "CORSIA 3", desc: "Pane e sostitutivi del pane, riso, legumi, sott'olio e sott'aceto", keywords: ["pane", "pane confezionato", "sostitutivi del pane", "cracker", "grissini", "piadine", "pan bauletto", "riso", "legumi", "ceci", "fagioli", "lenticchie", "sott'olio", "sott'aceto", "conserve", "olive", "carciofini"], color: "#FFCC00" },
-    { aisle: "CORSIA 4", desc: "Etnico, spezie, olio, aceto, cous cous, carne e pesce in scatola", keywords: ["etnico", "salsa di soia", "spezie", "pepe", "origano", "rosmarino", "olio", "olio d'oliva", "olio extravergine", "olio di semi", "aceto", "aceto balsamico", "cous cous", "carne in scatola", "pesce in scatola", "tonno", "tonno in scatola", "sgombro", "simmenthal"], color: "#FFCC00" },
-    { aisle: "CORSIA 5", desc: "Pasta, sughi e dado", keywords: ["pasta", "spaghetti", "penne", "maccheroni", "fusilli", "sughi", "pesto", "passata di pomodoro", "pomodori pelati", "concentrato di pomodoro", "dado", "brodo", "ragù"], color: "#FFCC00" },
-    { aisle: "CORSIA 6", desc: "Creme spalmabili, marmellate, fette biscottate, biscotti e cereali", keywords: ["creme spalmabili", "nutella", "marmellate", "confetture", "fette biscottate", "biscotti", "cereali", "corn flakes", "colazione", "miele"], color: "#FFCC00" },
-    { aisle: "CORSIA 7", desc: "Caffè e orzo, infusi, merendine", keywords: ["caffè", "cialde", "capsule", "orzo", "infusi", "tè", "tisane", "camomilla", "merendine", "plumcake", "croissant"], color: "#FFCC00" },
-    { aisle: "CORSIA 8", desc: "Caramelle, cioccolata, tortine e biscotti pasticceria", keywords: ["caramelle", "cioccolata", "cioccolato", "tavolette", "praline", "tortine", "biscotti pasticceria", "pasticceria confezionata", "gomme da masticare", "cioccolatini"], color: "#FFCC00" },
-    { aisle: "CORSIA 9", desc: "Farina e polenta, patatine, preparati per dolci e frutta sciroppata", keywords: ["farina", "polenta", "patatine", "snack salati", "salatini", "pop corn", "preparati per dolci", "lievito per dolci", "frutta sciroppata", "pesche sciroppate", "ananas sciroppato", "vanillina", "cacao"], color: "#FFCC00" },
-    { aisle: "CORSIA 10", desc: "Parafarmacia, pannolini, babyfood e babycare", keywords: ["parafarmacia", "pannolini", "pampers", "babyfood", "omogeneizzati", "latte in polvere", "babycare", "salviettine", "crema neonato", "ciucci", "biberon"], color: "#5AC8FA" },
-    { aisle: "CORSIA 11", desc: "Rasoi e saponi", keywords: ["rasoi", "schiuma da barba", "dopobarba", "saponi", "saponette", "sapone liquido", "bagnoschiuma", "docciaschiuma", "lamette"], color: "#5AC8FA" },
-    { aisle: "CORSIA 12", desc: "Medicazioni, assorbenti, detergenti intimi e cura piedi", keywords: ["medicazioni", "cerotti", "garze", "disinfettante", "assorbenti", "salvaslip", "detergenti intimi", "cura piedi", "crema piedi", "cotone", "cotton fioc"], color: "#5AC8FA" },
-    { aisle: "CORSIA 13", desc: "Igiene orale e fazzoletti", keywords: ["igiene orale", "dentifricio", "spazzolino", "collutorio", "fazzoletti", "fazzoletti di carta", "filo interdentale"], color: "#5AC8FA" },
-    { aisle: "CORSIA 14", desc: "Crema viso e corpo, cura capelli, depilazione, deodoranti", keywords: ["crema viso", "crema corpo", "crema mani", "cura capelli", "shampoo", "balsamo", "tinte per capelli", "lacca", "gel capelli", "depilazione", "ceretta", "deodoranti"], color: "#5AC8FA" },
-    { aisle: "CORSIA 15", desc: "Ammorbidente, detersivo bucato, carta igienica e accessori da stiro", keywords: ["ammorbidente", "detersivo bucato", "detersivo lavatrice", "lavatrice", "carta igienica", "accessori da stiro", "acqua distillata", "smacchiatore", "candeggina delicata"], color: "#32ADE6" },
-    { aisle: "CORSIA 16", desc: "Detersivi bagno, piatti e superfici; deodorante ambienti, insetticidi e solette scarpe", keywords: ["detersivi bagno", "detersivo piatti", "lavastoviglie", "brillantante", "detersivo superfici", "pavimenti", "candeggina", "ammoniaca", "deodorante ambienti", "insetticidi", "antizanzare", "solette scarpe", "spugne", "guanti"], color: "#32ADE6" },
-    { aisle: "CORSIA 17", desc: "Vino, prosecco e spumante", keywords: ["vino", "vino rosso", "vino bianco", "prosecco", "spumante", "champagne"], color: "#AF52DE" },
-    { aisle: "CORSIA 18", desc: "Vino, liquori e aperitivi", keywords: ["vino", "liquori", "amari", "vodka", "gin", "rum", "grappa", "whisky", "aperitivi", "campari", "aperol", "limoncello"], color: "#AF52DE" },
-    { aisle: "CORSIA 19", desc: "Pasta fresca, salumi, formaggio grattugiato, burro, tramezzini e lievito", keywords: ["pasta fresca", "tortellini", "ravioli", "gnocchi", "sfoglia", "pasta sfoglia", "salumi", "affettati", "prosciutto", "salame", "mortadella", "formaggio grattugiato", "parmigiano", "grana", "burro", "tramezzini", "lievito", "lievito di birra", "wurstel", "pancetta"], color: "#007AFF" },
-    { aisle: "CORSIA 20", desc: "Yogurt magro, formaggi, dessert e senza lattosio", keywords: ["yogurt magro", "formaggi", "mozzarella", "stracchino", "ricotta", "gorgonzola", "dessert", "budini", "senza lattosio", "alta digeribilità", "sottilette", "philadelphia"], color: "#007AFF" },
-    { aisle: "CORSIA 21", desc: "Yogurt frutta e greco, uova, latte, bevande vegetali, panna", keywords: ["yogurt", "yogurt alla frutta", "yogurt greco", "uova", "latte", "latte fresco", "latte uht", "bevande vegetali", "latte di soia", "latte di mandorla", "panna", "panna da cucina", "panna montata"], color: "#007AFF" },
-    { aisle: "CORSIA 22", desc: "Bevande energetiche, birre, bibite, sciroppi e Brioschi", keywords: ["acqua", "bevande energetiche", "red bull", "monster", "birre", "birra", "bibite", "coca cola", "aranciata", "sciroppi", "brioschi", "effervescente", "digestivo", "sprite", "tè freddo", "estathe", "succhi di frutta"], color: "#007AFF" },
-    { aisle: "CORSIA 23", desc: "Utensili cucina, moka, padelle e stampi", keywords: ["utensili cucina", "mestoli", "moka", "caffettiera", "padelle", "pentole", "stampi per dolci", "teglie", "posate", "coltelli"], color: "#5856D6" },
-    { aisle: "CORSIA 24", desc: "Piatti e bicchieri, contenitori, tovaglie", keywords: ["piatti", "bicchieri", "calici", "contenitori", "tupperware", "tovaglie", "tazze", "tazzine"], color: "#5856D6" },
-    { aisle: "CORSIA 25", desc: "Piatti monouso, tovaglioli, sacchetti gelo, pellicole", keywords: ["piatti plastica", "piatti monouso", "piatti carta", "bicchieri plastica", "tovaglioli", "tovaglioli di carta", "stuzzicadenti", "sacchetti gelo", "sacchetti freezer", "pellicola", "carta forno", "alluminio", "carta stagnola", "scottex", "carta casa"], color: "#5856D6" },
-    { aisle: "CORSIA 26", desc: "Tappeti bagno, candele, cornici, stendini, bacinelle, sacchi spazzatura", keywords: ["tappeti bagno", "candele", "cornici", "stendini", "mollette", "bacinelle", "sacchi spazzatura", "sacchetti immondizia", "secchi", "scope", "mocio"], color: "#5856D6" },
-    { aisle: "CORSIA 27", desc: "Biancheria bagno, accessori letto, brandine, guanciali e materassi", keywords: ["biancheria bagno", "asciugamani", "accappatoi", "accessori letto", "lenzuola", "coperte", "brandine", "guanciali", "cuscini", "materassi", "trapunte"], color: "#5856D6" },
-    { aisle: "CORSIA 28", desc: "Intimo e pigiami donna", keywords: ["intimo donna", "mutande donna", "reggiseni", "calze donna", "collant", "pigiami donna", "camicie da notte"], color: "#FF2D55" },
-    { aisle: "CORSIA 29", desc: "Abbigliamento uomo", keywords: ["abbigliamento uomo", "magliette", "pantaloni", "camicie uomo", "t-shirt", "felpe"], color: "#5856D6" },
-    { aisle: "CORSIA 30", desc: "Intimo e pigiami uomo", keywords: ["intimo uomo", "mutande uomo", "boxer", "slip", "calze uomo", "pigiami uomo", "calzini"], color: "#5856D6" },
-    { aisle: "CORSIA 31", desc: "Petfood", keywords: ["petfood", "animali", "cani", "gatti", "crocchette", "croccantini", "scatolette", "cibo per cani", "cibo per gatti", "lettiere", "sabbia gatti", "ossicini", "biscotti cani"], color: "#A2845E" },
-    { aisle: "CORSIA 32", desc: "Carbonella, vasi, terriccio, concimi, idraulica e attrezzi", keywords: ["carbonella", "barbecue", "griglia", "diavolina", "vasi", "terriccio", "terra", "concimi", "fertilizzanti", "idraulica", "attrezzi", "martello", "cacciavite", "fai da te", "chiodi", "colla"], color: "#34C759" },
-    { aisle: "CORSIA 33", desc: "Cassettiere, armadi e custodie salvagiache, sedie pieghevoli", keywords: ["cassettiere", "armadi", "custodie", "salvagiache", "grucce", "appendiabiti", "sedie pieghevoli", "sgabelli", "scatole", "organizer"], color: "#34C759" },
-    { aisle: "CORSIA 34", desc: "Materiale elettrico, pile e lampadine, idraulica bagno, carta regalo a parete", keywords: ["materiale elettrico", "ciabatte", "prolunghe", "pile", "batterie", "lampadine", "idraulica bagno", "doccia", "carta regalo", "nastri", "fiocchi", "prese", "adattatori"], color: "#34C759" },
-    { aisle: "CORSIA 35", desc: "Prodotti auto e valigie a parete", keywords: ["prodotti auto", "olio motore", "tergicristalli", "lavavetri", "tappetini auto", "valigie", "trolley", "zaini", "deodorante auto", "arbre magique"], color: "#34C759" },
-    { aisle: "CORSIA 36", desc: "Cancelleria", keywords: ["cancelleria", "quaderni", "penne", "matite", "colori", "pennarelli", "scuola", "ufficio", "fogli", "raccoglitori", "gomme", "righelli", "scotch", "forbici"], color: "#FF3B30" },
-    { aisle: "CORSIA 37", desc: "Bici, palloni, accessori sportivi e per piscina", keywords: ["bici", "biciclette", "palloni", "calcio", "accessori sportivi", "pesi", "piscina", "braccioli", "salvagenti", "materassini", "pompe", "caschi"], color: "#FF3B30" },
-    { aisle: "CORSIA 38", desc: "Giochi", keywords: ["giochi", "giocattoli", "bambini", "bambole", "macchinine", "lego", "giochi in scatola", "peluche", "puzzle"], color: "#FF3B30" },
-    { aisle: "BLUKIDS", desc: "Abbigliamento bambino (Blukids)", keywords: ["blukids", "abbigliamento bambino", "vestiti bambini", "neonati", "body"], color: "#5AC8FA" },
-    { aisle: "CARRERA", desc: "Abbigliamento (Carrera)", keywords: ["carrera", "jeans", "abbigliamento", "pantaloni"], color: "#8E8E93" },
-    { aisle: "ZONA PROMO", desc: "Zona Promozionale", keywords: ["promo", "promozioni", "offerte", "volantino", "sconti", "bancali"], color: "#FF3B30" }
+    { aisle: "ORTOFRUTTA", desc: "Frutta e verdura", keywords: ["frutta", "verdura", "ortaggi", "ortofrutta", "insalata", "mele", "banane", "pomodori", "patate", "cipolle", "zucchine", "carote", "arance", "limoni"], color: "#1E8E3E" },
+    { aisle: "GASTRONOMIA", desc: "Piatti pronti e rosticceria", keywords: ["gastronomia", "piatti pronti", "rosticceria", "pollo allo spiedo", "fritto", "lasagne", "parmigiana", "insalata russa"], color: "#F06C00" },
+    { aisle: "PANETTERIA E PASTICCERIA", desc: "Pane fresco e dolci", keywords: ["pane", "pane fresco", "panetteria", "pasticceria", "dolci freschi", "torte", "pizze", "focacce", "brioches", "cornetti"], color: "#FED404" },
+    { aisle: "MACELLERIA", desc: "Carne fresca", keywords: ["carne", "macelleria", "fettine", "hamburger", "salsicce", "pollo", "maiale", "manzo", "bistecca", "macinato", "arrosto"], color: "#E30613" },
+    { aisle: "PESCHERIA", desc: "Pesce fresco", keywords: ["pesce", "pescheria", "frutti di mare", "salmone", "gamberi", "branzino", "orata", "cozze", "vongole", "calamari"], color: "#0077C8" },
+    { aisle: "CORSIA 1", desc: "Sale, zucchero, zafferano, senza glutine e formati XXL", keywords: ["sale", "sale fino", "sale grosso", "zucchero", "zucchero di canna", "zucchero a velo", "zafferano", "senza glutine", "celiaci", "formati xxl", "grandi formati", "dolcificante"], color: "#FED404" },
+    { aisle: "CORSIA 2", desc: "Surgelati", keywords: ["surgelati", "gelati", "piselli", "pesce surgelato", "pizze surgelate", "patatine surgelate", "minestrone", "sofficini", "bastoncini", "spinaci"], color: "#38BDF8" },
+    { aisle: "CORSIA 3", desc: "Pane e sostitutivi del pane, riso, legumi, sott'olio e sott'aceto", keywords: ["pane confezionato", "sostitutivi del pane", "cracker", "grissini", "piadine", "pan bauletto", "riso", "legumi", "ceci", "fagioli", "lenticchie", "sott'olio", "sott'aceto", "conserve", "olive", "carciofini"], color: "#FED404" },
+    { aisle: "CORSIA 4", desc: "Etnico, spezie, olio, aceto, cous cous, carne e pesce in scatola", keywords: ["etnico", "salsa di soia", "spezie", "pepe", "origano", "rosmarino", "olio", "olio d'oliva", "olio extravergine", "olio di semi", "aceto", "aceto balsamico", "cous cous", "carne in scatola", "pesce in scatola", "tonno", "tonno in scatola", "sgombro", "simmenthal"], color: "#FED404" },
+    { aisle: "CORSIA 5", desc: "Pasta, sughi e dado", keywords: ["pasta", "spaghetti", "penne", "maccheroni", "fusilli", "sughi", "pesto", "passata di pomodoro", "pomodori pelati", "concentrato di pomodoro", "dado", "brodo", "ragù"], color: "#FED404" },
+    { aisle: "CORSIA 6", desc: "Creme spalmabili, marmellate, fette biscottate, biscotti e cereali", keywords: ["creme spalmabili", "nutella", "marmellate", "confetture", "fette biscottate", "biscotti", "cereali", "corn flakes", "colazione", "miele"], color: "#FED404" },
+    { aisle: "CORSIA 7", desc: "Caffè e orzo, infusi, merendine", keywords: ["caffè", "cialde", "capsule", "orzo", "infusi", "tè", "tisane", "camomilla", "merendine", "plumcake", "croissant"], color: "#FED404" },
+    { aisle: "CORSIA 8", desc: "Caramelle, cioccolata, tortine e biscotti pasticceria", keywords: ["caramelle", "cioccolata", "cioccolato", "tavolette", "praline", "tortine", "biscotti pasticceria", "pasticceria confezionata", "gomme da masticare", "cioccolatini"], color: "#FED404" },
+    { aisle: "CORSIA 9", desc: "Farina e polenta, patatine, preparati per dolci e frutta sciroppata", keywords: ["farina", "polenta", "patatine", "snack salati", "salatini", "pop corn", "preparati per dolci", "lievito per dolci", "frutta sciroppata", "pesche sciroppate", "ananas sciroppato", "vanillina", "cacao"], color: "#FED404" },
+    { aisle: "CORSIA 10", desc: "Parafarmacia, pannolini, babyfood e babycare", keywords: ["parafarmacia", "pannolini", "pampers", "babyfood", "omogeneizzati", "latte in polvere", "babycare", "salviettine", "crema neonato", "ciucci", "biberon"], color: "#00ACC1" },
+    { aisle: "CORSIA 11", desc: "Rasoi e saponi", keywords: ["rasoi", "schiuma da barba", "dopobarba", "saponi", "saponette", "sapone liquido", "bagnoschiuma", "docciaschiuma", "lamette"], color: "#00ACC1" },
+    { aisle: "CORSIA 12", desc: "Medicazioni, assorbenti, detergenti intimi e cura piedi", keywords: ["medicazioni", "cerotti", "garze", "disinfettante", "assorbenti", "salvaslip", "detergenti intimi", "cura piedi", "crema piedi", "cotone", "cotton fioc"], color: "#00ACC1" },
+    { aisle: "CORSIA 13", desc: "Igiene orale e fazzoletti", keywords: ["igiene orale", "dentifricio", "spazzolino", "collutorio", "fazzoletti", "fazzoletti di carta", "filo interdentale"], color: "#00ACC1" },
+    { aisle: "CORSIA 14", desc: "Crema viso e corpo, cura capelli, depilazione, deodoranti", keywords: ["crema viso", "crema corpo", "crema mani", "cura capelli", "shampoo", "balsamo", "tinte per capelli", "lacca", "gel capelli", "depilazione", "ceretta", "deodoranti"], color: "#00ACC1" },
+    { aisle: "CORSIA 15", desc: "Ammorbidente, detersivo bucato, carta igienica e accessori da stiro", keywords: ["ammorbidente", "detersivo bucato", "detersivo lavatrice", "lavatrice", "carta igienica", "accessori da stiro", "acqua distillata", "smacchiatore", "candeggina delicata"], color: "#00897B" },
+    { aisle: "CORSIA 16", desc: "Detersivi bagno, piatti e superfici; deodorante ambienti, insetticidi e solette scarpe", keywords: ["detersivi bagno", "detersivo piatti", "lavastoviglie", "brillantante", "detersivo superfici", "pavimenti", "candeggina", "ammoniaca", "deodorante ambienti", "insetticidi", "antizanzare", "solette scarpe", "spugne", "guanti"], color: "#00897B" },
+    { aisle: "CORSIA 17", desc: "Vino, prosecco e spumante", keywords: ["vino", "vino rosso", "vino bianco", "prosecco", "spumante", "champagne"], color: "#8E24AA" },
+    { aisle: "CORSIA 18", desc: "Vino, liquori e aperitivi", keywords: ["vino", "liquori", "amari", "vodka", "gin", "rum", "grappa", "whisky", "aperitivi", "campari", "aperol", "limoncello"], color: "#8E24AA" },
+    { aisle: "CORSIA 19", desc: "Pasta fresca, salumi, formaggio grattugiato, burro, tramezzini e lievito", keywords: ["pasta fresca", "tortellini", "ravioli", "gnocchi", "sfoglia", "pasta sfoglia", "salumi", "affettati", "prosciutto", "salame", "mortadella", "formaggio grattugiato", "parmigiano", "grana", "burro", "tramezzini", "lievito", "lievito di birra", "wurstel", "pancetta"], color: "#1E62D0" },
+    { aisle: "CORSIA 20", desc: "Yogurt magro, formaggi, dessert e senza lattosio", keywords: ["yogurt magro", "formaggi", "mozzarella", "stracchino", "ricotta", "gorgonzola", "dessert", "budini", "senza lattosio", "alta digeribilità", "sottilette", "philadelphia"], color: "#1E62D0" },
+    { aisle: "CORSIA 21", desc: "Yogurt frutta e greco, uova, latte, bevande vegetali, panna", keywords: ["yogurt", "yogurt alla frutta", "yogurt greco", "uova", "latte", "latte fresco", "latte uht", "bevande vegetali", "latte di soia", "latte di mandorla", "panna", "panna da cucina", "panna montata"], color: "#1E62D0" },
+    { aisle: "CORSIA 22", desc: "Bevande energetiche, birre, bibite, sciroppi e Brioschi", keywords: ["acqua", "bevande energetiche", "red bull", "monster", "birre", "birra", "bibite", "coca cola", "aranciata", "sciroppi", "brioschi", "effervescente", "digestivo", "sprite", "tè freddo", "estathe", "succhi di frutta"], color: "#1E62D0" },
+    { aisle: "CORSIA 23", desc: "Utensili cucina, moka, padelle e stampi", keywords: ["utensili cucina", "mestoli", "moka", "caffettiera", "padelle", "pentole", "stampi per dolci", "teglie", "posate", "coltelli"], color: "#5E35B1" },
+    { aisle: "CORSIA 24", desc: "Piatti e bicchieri, contenitori, tovaglie", keywords: ["piatti", "bicchieri", "calici", "contenitori", "tupperware", "tovaglie", "tazze", "tazzine"], color: "#5E35B1" },
+    { aisle: "CORSIA 25", desc: "Piatti monouso, tovaglioli, sacchetti gelo, pellicole", keywords: ["piatti plastica", "piatti monouso", "piatti carta", "bicchieri plastica", "tovaglioli", "tovaglioli di carta", "stuzzicadenti", "sacchetti gelo", "sacchetti freezer", "pellicola", "carta forno", "alluminio", "carta stagnola", "scottex", "carta casa"], color: "#5E35B1" },
+    { aisle: "CORSIA 26", desc: "Tappeti bagno, candele, cornici, stendini, bacinelle, sacchi spazzatura", keywords: ["tappeti bagno", "candele", "cornici", "stendini", "mollette", "bacinelle", "sacchi spazzatura", "sacchetti immondizia", "secchi", "scope", "mocio"], color: "#5E35B1" },
+    { aisle: "CORSIA 27", desc: "Biancheria bagno, accessori letto, brandine, guanciali e materassi", keywords: ["biancheria bagno", "asciugamani", "accappatoi", "accessori letto", "lenzuola", "coperte", "brandine", "guanciali", "cuscini", "materassi", "trapunte"], color: "#5E35B1" },
+    { aisle: "CORSIA 28", desc: "Intimo e pigiami donna", keywords: ["intimo donna", "mutande donna", "reggiseni", "calze donna", "collant", "pigiami donna", "camicie da notte"], color: "#D81B60" },
+    { aisle: "CORSIA 29", desc: "Abbigliamento uomo", keywords: ["abbigliamento uomo", "magliette", "pantaloni", "camicie uomo", "t-shirt", "felpe"], color: "#3949AB" },
+    { aisle: "CORSIA 30", desc: "Intimo e pigiami uomo", keywords: ["intimo uomo", "mutande uomo", "boxer", "slip", "calze uomo", "pigiami uomo", "calzini"], color: "#3949AB" },
+    { aisle: "CORSIA 31", desc: "Petfood", keywords: ["petfood", "animali", "cani", "gatti", "crocchette", "croccantini", "scatolette", "cibo per cani", "cibo per gatti", "lettiere", "sabbia gatti", "ossicini", "biscotti cani"], color: "#752902" },
+    { aisle: "CORSIA 32", desc: "Carbonella, vasi, terriccio, concimi, idraulica e attrezzi", keywords: ["carbonella", "barbecue", "griglia", "diavolina", "vasi", "terriccio", "terra", "concimi", "fertilizzanti", "idraulica", "attrezzi", "martello", "cacciavite", "fai da te", "chiodi", "colla"], color: "#2E7D32" },
+    { aisle: "CORSIA 33", desc: "Cassettiere, armadi e custodie salvagiache, sedie pieghevoli", keywords: ["cassettiere", "armadi", "custodie", "salvagiache", "grucce", "appendiabiti", "sedie pieghevoli", "sgabelli", "scatole", "organizer"], color: "#2E7D32" },
+    { aisle: "CORSIA 34", desc: "Materiale elettrico, pile e lampadine, idraulica bagno, carta regalo a parete", keywords: ["materiale elettrico", "ciabatte", "prolunghe", "pile", "batterie", "lampadine", "idraulica bagno", "doccia", "carta regalo", "nastri", "fiocchi", "prese", "adattatori"], color: "#2E7D32" },
+    { aisle: "CORSIA 35", desc: "Prodotti auto e valigie a parete", keywords: ["prodotti auto", "olio motore", "tergicristalli", "lavavetri", "tappetini auto", "valigie", "trolley", "zaini", "deodorante auto", "arbre magique"], color: "#2E7D32" },
+    { aisle: "CORSIA 36", desc: "Cancelleria", keywords: ["cancelleria", "quaderni", "penne", "matite", "colori", "pennarelli", "scuola", "ufficio", "fogli", "raccoglitori", "gomme", "righelli", "scotch", "forbici"], color: "#E30613" },
+    { aisle: "CORSIA 37", desc: "Bici, palloni, accessori sportivi e per piscina", keywords: ["bici", "biciclette", "palloni", "calcio", "accessori sportivi", "pesi", "piscina", "braccioli", "salvagenti", "materassini", "pompe", "caschi"], color: "#E30613" },
+    { aisle: "CORSIA 38", desc: "Giochi", keywords: ["giochi", "giocattoli", "bambini", "bambole", "macchinine", "lego", "giochi in scatola", "peluche", "puzzle"], color: "#E30613" },
+    { aisle: "BLUKIDS", desc: "Abbigliamento bambino (Blukids)", keywords: ["blukids", "abbigliamento bambino", "vestiti bambini", "neonati", "body"], color: "#0288D1" },
+    { aisle: "CARRERA", desc: "Abbigliamento (Carrera)", keywords: ["carrera", "jeans", "abbigliamento", "pantaloni"], color: "#546E7A" },
+    { aisle: "ZONA PROMO", desc: "Zona Promozionale", keywords: ["promo", "promozioni", "offerte", "volantino", "sconti", "bancali"], color: "#E30613" }
 ];
 
 const searchInput = document.getElementById('search-input');
 const suggestionsList = document.getElementById('suggestions-list');
+const welcomeCard = document.getElementById('welcome-card');
 const clearBtn = document.getElementById('clear-btn');
 const searchView = document.getElementById('search-view');
 const resultView = document.getElementById('result-view');
 const resultMatchedProduct = document.getElementById('result-matched-product');
+const aisleContainer = document.getElementById('aisle-container');
 const resultAisle = document.getElementById('result-aisle');
 const resultDesc = document.getElementById('result-desc');
 const backBtn = document.getElementById('back-btn');
@@ -68,11 +70,33 @@ infoBtn.addEventListener('click', () => { infoModal.classList.add('show'); });
 closeModalBtn.addEventListener('click', () => { infoModal.classList.remove('show'); });
 infoModal.addEventListener('click', (e) => { if(e.target === infoModal) infoModal.classList.remove('show'); });
 
-// Core fuzzy matching logic
+// Auto-fit titolo corsia: nessuna parola spezzata
+function fitAisleTitle() {
+    const maxWidth = aisleContainer.clientWidth - 16;
+    if (maxWidth <= 0) return;
+    
+    let fontSize = window.innerWidth <= 420 ? 68 : 86;
+    const minFontSize = 28;
+    
+    resultAisle.style.fontSize = fontSize + 'px';
+    
+    while (resultAisle.scrollWidth > maxWidth && fontSize > minFontSize) {
+        fontSize -= 2;
+        resultAisle.style.fontSize = fontSize + 'px';
+    }
+}
+
+window.addEventListener('resize', () => {
+    if (resultView.classList.contains('active')) {
+        fitAisleTitle();
+    }
+});
+
+// Fuzzy matching engine
 function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
 function collapseDoubles(str) { return str.replace(/([a-z])\1+/g, "$1"); }
 function damerauLevenshtein(a, b) {
-    const alen = a.length; const blen = b.length;
+    const alen = a.length, blen = b.length;
     if (alen === 0) return blen; if (blen === 0) return alen;
     const dp = Array.from({ length: alen + 1 }, () => new Array(blen + 1).fill(0));
     for (let i = 0; i <= alen; i++) dp[i][0] = i; for (let j = 0; j <= blen; j++) dp[0][j] = j;
@@ -88,8 +112,8 @@ function damerauLevenshtein(a, b) {
     return dp[alen][blen];
 }
 function smartFuzzyDistance(queryNorm, targetNorm) {
-    const qNoSpace = queryNorm.replace(/\s+/g, ""); const tNoSpace = targetNorm.replace(/\s+/g, "");
-    const qCol = collapseDoubles(qNoSpace); const tCol = collapseDoubles(tNoSpace);
+    const qNoSpace = queryNorm.replace(/\s+/g, ""), tNoSpace = targetNorm.replace(/\s+/g, "");
+    const qCol = collapseDoubles(qNoSpace), tCol = collapseDoubles(tNoSpace);
     let bestDist = Math.min(damerauLevenshtein(qNoSpace, tNoSpace), damerauLevenshtein(qCol, tCol));
     if (tNoSpace.length > qNoSpace.length && qNoSpace.length >= 3) {
         bestDist = Math.min(bestDist, damerauLevenshtein(qNoSpace, tNoSpace.slice(0, qNoSpace.length)), damerauLevenshtein(qCol, tCol.slice(0, qCol.length)));
@@ -110,8 +134,7 @@ function smartFuzzyDistance(queryNorm, targetNorm) {
 function searchProducts(rawQuery) {
     const qNorm = normalize(rawQuery);
     if (!qNorm) return { direct: [], fuzzy: [] };
-    const qNoSpace = qNorm.replace(/\s+/g, "");
-    const qCollapsed = collapseDoubles(qNoSpace);
+    const qNoSpace = qNorm.replace(/\s+/g, ""), qCollapsed = collapseDoubles(qNoSpace);
     let maxAllowedDist = qNoSpace.length >= 8 ? 3 : (qNoSpace.length >= 5 ? 2 : (qNoSpace.length >= 3 ? 1 : 0));
     const directResults = [], fuzzyResults = [];
 
@@ -141,6 +164,14 @@ function searchProducts(rawQuery) {
 
 function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
+function getBrightness(hex) {
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    return (r * 299 + g * 587 + b * 114) / 1000;
+}
+
 function createSuggestionElement(item) {
     const li = document.createElement('li');
     li.className = 'suggestion-item' + (item.isFuzzy ? ' fuzzy-match' : '');
@@ -163,7 +194,7 @@ function createSuggestionElement(item) {
     aisleSpan.className = 'li-aisle';
     aisleSpan.textContent = item.aisle;
     aisleSpan.style.background = item.color;
-    aisleSpan.style.color = (item.color === '#FFCC00' || item.color === '#5AC8FA') ? '#1c1c1e' : '#fff';
+    aisleSpan.style.color = getBrightness(item.color) > 155 ? '#2D1606' : '#ffffff';
 
     li.appendChild(leftDiv);
     li.appendChild(aisleSpan);
@@ -175,56 +206,51 @@ function createSuggestionElement(item) {
     return li;
 }
 
-function getBrightness(hex) {
-    hex = hex.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    return (r * 299 + g * 587 + b * 114) / 1000;
-}
-
 function showResult(item) {
     searchView.classList.remove('active');
     infoBtn.style.opacity = '0';
-    setTimeout(() => infoBtn.style.display = 'none', 300);
+    setTimeout(() => infoBtn.style.display = 'none', 250);
     
     resultView.classList.add('active');
+    document.body.classList.add('result-active');
+
     resultMatchedProduct.textContent = capitalize(item.matchedLabel);
     resultAisle.textContent = item.aisle;
     resultDesc.textContent = item.desc;
 
-    dynamicBg.style.backgroundColor = item.color;
+    dynamicBg.style.background = item.color;
     themeColorMeta.setAttribute('content', item.color);
     
-    const brightness = getBrightness(item.color);
-    const isLight = brightness > 140; 
-    
-    if(isLight) {
-        document.body.classList.remove('dark-mode');
-        document.body.style.color = '#1c1c1e';
+    const isLight = getBrightness(item.color) > 155;
+    document.body.classList.remove('dark-mode', 'light-result');
+    if (isLight) {
+        document.body.classList.add('light-result');
+        document.body.style.color = '#2D1606';
     } else {
         document.body.classList.add('dark-mode');
         document.body.style.color = '#ffffff';
     }
 
     searchInput.blur();
+    requestAnimationFrame(() => fitAisleTitle());
 }
 
 function resetSearch() {
     resultView.classList.remove('active');
     searchView.classList.add('active');
+    document.body.classList.remove('result-active', 'dark-mode', 'light-result');
     
     infoBtn.style.display = 'flex';
     setTimeout(() => infoBtn.style.opacity = '1', 10);
     
-    dynamicBg.style.backgroundColor = 'var(--app-bg)';
-    themeColorMeta.setAttribute('content', '#f2f2f7');
-    document.body.classList.remove('dark-mode');
+    dynamicBg.style.background = 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
+    themeColorMeta.setAttribute('content', '#FFF8F0');
     document.body.style.color = 'var(--text-color)';
     
     searchInput.value = '';
     clearBtn.style.display = 'none';
     suggestionsList.innerHTML = '';
+    welcomeCard.classList.remove('hidden');
     setTimeout(() => searchInput.focus(), 250);
 }
 
@@ -232,7 +258,12 @@ searchInput.addEventListener('input', (e) => {
     const val = e.target.value;
     clearBtn.style.display = val.length > 0 ? 'flex' : 'none';
     suggestionsList.innerHTML = '';
-    if (!val.trim()) return;
+    
+    if (!val.trim()) {
+        welcomeCard.classList.remove('hidden');
+        return;
+    }
+    welcomeCard.classList.add('hidden');
 
     const { direct, fuzzy } = searchProducts(val);
     if (direct.length === 0 && fuzzy.length > 0) {
@@ -253,8 +284,8 @@ searchInput.addEventListener('input', (e) => {
         const empty = document.createElement('li');
         empty.className = 'section-hint';
         empty.style.textAlign = 'center';
-        empty.style.marginTop = '40px';
-        empty.textContent = 'Nessun prodotto trovato...';
+        empty.style.marginTop = '36px';
+        empty.textContent = 'Nessun prodotto trovato... prova con un sinonimo';
         suggestionsList.appendChild(empty);
     }
 });
@@ -264,6 +295,7 @@ clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     clearBtn.style.display = 'none';
     suggestionsList.innerHTML = '';
+    welcomeCard.classList.remove('hidden');
     searchInput.focus();
 });
 
