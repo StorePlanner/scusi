@@ -65,6 +65,7 @@ const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
 const infoTrigger = document.getElementById('info-trigger');
 const infoModal = document.getElementById('info-modal');
+const modalScroll = document.getElementById('modal-scroll');
 const closeModalBtn = document.getElementById('close-modal-btn');
 
 let currentActiveItem = null;
@@ -108,16 +109,19 @@ if (window.matchMedia) {
     });
 }
 
-// Modale Info / Note Legali cliccando sul logo "Scusi?"
+// Modale Info / QR Condivisione / Note Legali cliccando sul logo "Scusi?"
 if (infoTrigger) {
     infoTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
+        searchInput.blur();
         if (navigator.vibrate) navigator.vibrate(15);
+        if (modalScroll) modalScroll.scrollTop = 0;
         infoModal.classList.add('show');
     });
 }
 if (closeModalBtn) {
     closeModalBtn.addEventListener('click', () => {
+        if (navigator.vibrate) navigator.vibrate(12);
         infoModal.classList.remove('show');
     });
 }
@@ -127,7 +131,25 @@ if (infoModal) {
     });
 }
 
-// Cliccando ovunque nel box di ricerca (anche sull'icona lente) attiva subito l'input (ottimo su desktop)
+// Chiudi automaticamente la tastiera dello smartphone toccando qualsiasi area vuota dell'app
+document.addEventListener('pointerdown', (e) => {
+    if (document.activeElement === searchInput) {
+        if (!searchBoxWrapper.contains(e.target)) {
+            searchInput.blur();
+        }
+    }
+});
+
+// Chiudi la tastiera anche quando si scorre con il dito la lista dei risultati
+if (suggestionsList) {
+    suggestionsList.addEventListener('touchmove', () => {
+        if (document.activeElement === searchInput) {
+            searchInput.blur();
+        }
+    }, { passive: true });
+}
+
+// Cliccando ovunque nel box di ricerca (anche sull'icona lente) attiva subito l'input
 if (searchBoxWrapper) {
     searchBoxWrapper.addEventListener('click', (e) => {
         if (e.target !== clearBtn && !clearBtn.contains(e.target)) {
@@ -256,8 +278,8 @@ window.addEventListener('resize', () => {
 });
 
 // Fuzzy matching engine
-function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
-function collapseDoubles(str) { return str.replace(/([a-z])+/g, "$1"); }
+function normalize(str) { return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/['’\-]/g, " ").replace(/\s+/g, " ").trim(); }
+function collapseDoubles(str) { return str.replace(/([a-z])\1+/g, "$1"); }
 function damerauLevenshtein(a, b) {
     const alen = a.length, blen = b.length;
     if (alen === 0) return blen; if (blen === 0) return alen;
@@ -492,7 +514,6 @@ resultView.addEventListener('click', (e) => {
     }
 });
 
-
 // ==========================================
 // Registrazione Service Worker (Offline Corsia) + Installazione Rapida Home
 // ==========================================
@@ -512,7 +533,6 @@ const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
 const isDismissed = sessionStorage.getItem('scusi_install_dismissed') === '1';
 
 if (!isStandalone && !isDismissed && installBanner) {
-    // Rileva iOS (iPhone/iPad)
     const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     if (isIos) {
         installBannerText.innerHTML = 'Salva su Home: tocca <strong>Condividi</strong> (quadrato con freccia) &rarr; <strong>Aggiungi a schermata Home</strong>';
@@ -553,7 +573,6 @@ window.addEventListener('appinstalled', () => {
     if (installBanner) installBanner.style.display = 'none';
 });
 
-// Nascondi il banner durante la digitazione e ripristinalo quando la barra è vuota
 searchInput.addEventListener('input', () => {
     if (!installBanner) return;
     if (searchInput.value.trim()) {

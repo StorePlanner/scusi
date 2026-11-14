@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3.1">
+    <link rel="stylesheet" href="style.css?v=3.2">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#FFF8F0">
@@ -102,61 +102,64 @@
         <!-- Modale Info / QR Condivisione Colleghi / Disclaimer Legale -->
         <div id="info-modal" class="modal">
             <div class="modal-content liquid-glass-modal">
-                <button type="button" id="close-modal-btn" aria-label="Chiudi">
-                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <!-- X di chiusura fissa in Liquid Glass sempre visibile durante lo scorrimento -->
+                <button type="button" id="close-modal-btn" class="liquid-glass-close" aria-label="Chiudi">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
 
-                <!-- 1. PRIMA COSA IN ALTO: QR Code per passare l'app ai colleghi -->
-                <div class="qr-share-card">
-                    <p class="qr-share-title">Passa l'app a un collega</p>
-                    <p class="qr-share-sub">Inquadra il QR con la fotocamera per aprire subito <strong>Scusi?</strong></p>
-                    <div class="qr-frame">
-                        <img src="qr-scusi.png" alt="QR Code Scusi?" class="qr-code-img">
-                    </div>
-                    <button type="button" id="copy-link-btn" class="copy-link-btn">
-                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <span id="copy-link-text">Copia Link</span>
-                    </button>
-                </div>
-
-                <!-- 2. Logo App, Versione e Crediti -->
-                <div class="modal-header">
-                    <img src="icon-192.png" alt="Logo Scusi?" class="modal-logo">
-                    <h2>Scusi?</h2>
-                    <p class="version">Versione 3.1.0 (Offline Ready • Liquid Glass) • 2026</p>
-                </div>
-
-                <div class="modal-body">
-                    <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti sul codice sorgente riservati / All source code rights reserved.</p>
-                    
-                    <p class="disclaimer-title">Note Legali, Marchi e Disclaimer / Legal &amp; IP Notice</p>
-                    
-                    <div class="disclaimer-text">
-                        <p><strong>IT – Titolarità dei Marchi e Origine degli Asset Grafici:</strong><br>
-                        Il marchio <strong>CONAD</strong>, il simbolo della Margherita e le relative illustrazioni sono marchi registrati, opere dell'ingegno protette dal diritto d'autore (L. 633/1941 e D.Lgs. 30/2005 – Codice della Proprietà Industriale) e di <strong>esclusiva proprietà e licenza di CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna) e delle relative cooperative/licenziatari.<br><br>
-                        Nello specifico, i seguenti elementi grafici integrati nell'interfaccia sono stati prelevati in quanto pubblicamente accessibili e visibili all'interno del codice sorgente HTML e delle risorse pubbliche del sito istituzionale <em>www.conad.it</em>:
-                        </p>
-                        <ul class="disclaimer-list">
-                            <li><code>conad-symbol.svg</code> (simbolo vettoriale della Margherita Conad, disponibile pubblicamente su <code>conad.it/assets/icons/conad-symbol.svg</code>);</li>
-                            <li><code>illu_conad_it_thank you page.png</code> (illustrazione editoriale rinominata localmente <code>conad-hero.png</code> con la sola rimozione dello sfondo bianco, disponibile pubblicamente su <code>conad.it/assets/images/illustrazioni_2022/</code>).</li>
-                        </ul>
-                        <p><strong>Assenza di Autorizzazione, Affiliazione e Scopo Amatoriale:</strong><br>
-                        L'autore dell'applicazione (Massimo Maggipinto) dichiara espressamente di <strong>non possedere alcuna licenza, autorizzazione esplicita, concessione o delega</strong> da parte di CONAD per l'utilizzo di tali marchi e file grafici, né esiste alcun rapporto di affiliazione, partenariato, sponsorizzazione o approvazione ufficiale da parte di CONAD nei confronti di questa Web App.<br>
-                        Tali risorse vengono impiegate <strong>unicamente a titolo illustrativo, nominativo e descrittivo</strong> per contestualizzare l'ambiente di lavoro interno e facilitare l'orientamento tra le corsie, senza alcun fine di lucro, commercializzazione, distribuzione al pubblico o contraffazione (uso referenziale e non commerciale). È severamente vietato copiare, replicare o utilizzare l'app per scopi commerciali o diversi dall'uso strettamente amatoriale.<br><br>
-                        <strong>Esclusione di Responsabilità e Rimozione:</strong><br>
-                        Questa è una versione Beta amatoriale fornita <em>"così com'è"</em>: l'autore declina ogni responsabilità civile, penale, amministrativa o legale derivante dall'uso, da eventuali malfunzionamenti o da inesattezze nella mappatura delle corsie. Su semplice richiesta del titolare dei diritti (CONAD), ogni elemento grafico protetto verrà immediatamente rimosso.</p>
+                <div class="modal-scroll" id="modal-scroll">
+                    <!-- 1. PRIMA COSA IN ALTO: QR Code per passare l'app ai colleghi -->
+                    <div class="qr-share-card">
+                        <p class="qr-share-title">Passa l'app a un collega</p>
+                        <p class="qr-share-sub">Inquadra il QR con la fotocamera per aprire subito <strong>Scusi?</strong></p>
+                        <div class="qr-frame">
+                            <img src="qr-scusi.png" alt="QR Code Scusi?" class="qr-code-img">
+                        </div>
+                        <button type="button" id="copy-link-btn" class="copy-link-btn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span id="copy-link-text">Copia Link</span>
+                        </button>
                     </div>
 
-                    <div class="disclaimer-text" style="margin-top: 12px;">
-                        <p><strong>EN – Trademarks, Copyright &amp; Legal Disclaimer:</strong><br>
-                        The <strong>CONAD</strong> trademark, the Daisy symbol, and related artwork are registered trademarks and copyrighted works owned exclusively by <strong>CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna, Italy) and its affiliates.<br><br>
-                        Specifically, the following graphic assets used in this app were retrieved as publicly accessible files within the public HTML source code of <em>www.conad.it</em>: <code>conad-symbol.svg</code> and <code>illu_conad_it_thank you page.png</code> (locally adapted as <code>conad-hero.png</code>).<br><br>
-                        The developer (Massimo Maggipinto) holds <strong>no explicit permission, license, or official endorsement</strong> from CONAD, and this app has no official affiliation with CONAD. These assets are used solely for nominative, descriptive, and illustrative identification within a strictly amateur, non-commercial internal support tool. Commercial use, copying, or redistribution is strictly prohibited. Provided "as is" in Beta: the author disclaims all civil, criminal, or legal liability, and will immediately remove any proprietary asset upon request by the rights holder.</p>
+                    <!-- 2. Logo App, Versione e Crediti -->
+                    <div class="modal-header">
+                        <img src="icon-192.png" alt="Logo Scusi?" class="modal-logo">
+                        <h2>Scusi?</h2>
+                        <p class="version">Versione 3.2.0 (Offline Ready • Liquid Glass) • 2026</p>
+                    </div>
+
+                    <div class="modal-body">
+                        <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti sul codice sorgente riservati / All source code rights reserved.</p>
+                        
+                        <p class="disclaimer-title">Note Legali, Marchi e Disclaimer / Legal &amp; IP Notice</p>
+                        
+                        <div class="disclaimer-text">
+                            <p><strong>IT – Titolarità dei Marchi e Origine degli Asset Grafici:</strong><br>
+                            Il marchio <strong>CONAD</strong>, il simbolo della Margherita e le relative illustrazioni sono marchi registrati, opere dell'ingegno protette dal diritto d'autore (L. 633/1941 e D.Lgs. 30/2005 – Codice della Proprietà Industriale) e di <strong>esclusiva proprietà e licenza di CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna) e delle relative cooperative/licenziatari.<br><br>
+                            Nello specifico, i seguenti elementi grafici integrati nell'interfaccia sono stati prelevati in quanto pubblicamente accessibili e visibili all'interno del codice sorgente HTML e delle risorse pubbliche del sito istituzionale <em>www.conad.it</em>:
+                            </p>
+                            <ul class="disclaimer-list">
+                                <li><code>conad-symbol.svg</code> (simbolo vettoriale della Margherita Conad, disponibile pubblicamente su <code>conad.it/assets/icons/conad-symbol.svg</code>);</li>
+                                <li><code>illu_conad_it_thank you page.png</code> (illustrazione editoriale rinominata localmente <code>conad-hero.png</code> con la sola rimozione dello sfondo bianco, disponibile pubblicamente su <code>conad.it/assets/images/illustrazioni_2022/</code>).</li>
+                            </ul>
+                            <p><strong>Assenza di Autorizzazione, Affiliazione e Scopo Amatoriale:</strong><br>
+                            L'autore dell'applicazione (Massimo Maggipinto) dichiara espressamente di <strong>non possedere alcuna licenza, autorizzazione esplicita, concessione o delega</strong> da parte di CONAD per l'utilizzo di tali marchi e file grafici, né esiste alcun rapporto di affiliazione, partenariato, sponsorizzazione o approvazione ufficiale da parte di CONAD nei confronti di questa Web App.<br>
+                            Tali risorse vengono impiegate <strong>unicamente a titolo illustrativo, nominativo e descrittivo</strong> per contestualizzare l'ambiente di lavoro interno e facilitare l'orientamento tra le corsie, senza alcun fine di lucro, commercializzazione, distribuzione al pubblico o contraffazione (uso referenziale e non commerciale). È severamente vietato copiare, replicare o utilizzare l'app per scopi commerciali o diversi dall'uso strettamente amatoriale.<br><br>
+                            <strong>Esclusione di Responsabilità e Rimozione:</strong><br>
+                            Questa è una versione Beta amatoriale fornita <em>"così com'è"</em>: l'autore declina ogni responsabilità civile, penale, amministrativa o legale derivante dall'uso, da eventuali malfunzionamenti o da inesattezze nella mappatura delle corsie. Su semplice richiesta del titolare dei diritti (CONAD), ogni elemento grafico protetto verrà immediatamente rimosso.</p>
+                        </div>
+
+                        <div class="disclaimer-text" style="margin-top: 12px;">
+                            <p><strong>EN – Trademarks, Copyright &amp; Legal Disclaimer:</strong><br>
+                            The <strong>CONAD</strong> trademark, the Daisy symbol, and related artwork are registered trademarks and copyrighted works owned exclusively by <strong>CONAD – Consorzio Nazionale Dettaglianti Società Cooperativa</strong> (Bologna, Italy) and its affiliates.<br><br>
+                            Specifically, the following graphic assets used in this app were retrieved as publicly accessible files within the public HTML source code of <em>www.conad.it</em>: <code>conad-symbol.svg</code> and <code>illu_conad_it_thank you page.png</code> (locally adapted as <code>conad-hero.png</code>).<br><br>
+                            The developer (Massimo Maggipinto) holds <strong>no explicit permission, license, or official endorsement</strong> from CONAD, and this app has no official affiliation with CONAD. These assets are used solely for nominative, descriptive, and illustrative identification within a strictly amateur, non-commercial internal support tool. Commercial use, copying, or redistribution is strictly prohibited. Provided "as is" in Beta: the author disclaims all civil, criminal, or legal liability, and will immediately remove any proprietary asset upon request by the rights holder.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="script.js?v=3.1"></script>
+    <script src="script.js?v=3.2"></script>
 </body>
 </html>
