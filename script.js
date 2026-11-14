@@ -101,6 +101,7 @@ function applyTheme(dark, persist = false) {
             ? 'linear-gradient(155deg, #140D09 0%, #1E130E 55%, #291811 100%)'
             : 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
         dynamicBg.style.background = homeGrad;
+    resultView.style.backgroundColor = '';
         document.documentElement.style.backgroundColor = homeSolid;
         document.body.style.backgroundColor = homeSolid;
         themeColorMeta.setAttribute('content', homeSolid);
@@ -352,6 +353,7 @@ function showResult(item) {
 
     // Applica il colore sia a #dynamic-bg che a html/body e theme-color
     dynamicBg.style.background = deptColor;
+    resultView.style.backgroundColor = deptColor;
     document.documentElement.style.backgroundColor = deptColor;
     document.body.style.backgroundColor = deptColor;
     themeColorMeta.setAttribute('content', deptColor);
@@ -381,6 +383,7 @@ function resetSearch() {
         : 'linear-gradient(155deg, #FFFBF5 0%, #FFF2E2 55%, #FFE6CC 100%)';
 
     dynamicBg.style.background = homeGrad;
+    resultView.style.backgroundColor = '';
     document.documentElement.style.backgroundColor = homeSolid;
     document.body.style.backgroundColor = homeSolid;
     themeColorMeta.setAttribute('content', homeSolid);
