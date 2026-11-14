@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3.0">
+    <link rel="stylesheet" href="style.css?v=3.1">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#FFF8F0">
@@ -46,7 +46,7 @@
         <!-- Vista Ricerca -->
         <div id="search-view" class="view active">
             <div class="header">
-                <button type="button" id="info-trigger" class="brand-badge liquid-glass" aria-label="Informazioni e Note Legali">
+                <button type="button" id="info-trigger" class="brand-badge liquid-glass" aria-label="Condividi QR e Informazioni sull'App">
                     <img src="conad-symbol.svg" alt="Simbolo Margherita" class="logo-daisy">
                     <div class="brand-titles">
                         <h1 class="logo-text">Scusi?</h1>
@@ -66,6 +66,13 @@
             </div>
 
             <ul id="suggestions-list"></ul>
+
+            <!-- Banner installazione rapida su Home Screen (nascosto se già installata) -->
+            <div id="install-banner" class="install-banner liquid-glass" style="display: none;">
+                <div class="install-banner-content" id="install-banner-text"></div>
+                <button type="button" id="install-action-btn" class="install-cta-btn" style="display: none;">Installa App</button>
+                <button type="button" id="dismiss-install-btn" class="dismiss-install-btn" aria-label="Chiudi suggerimento">&times;</button>
+            </div>
 
             <!-- Card di benvenuto ancorata in basso così lascia libero il fiore al centro -->
             <div id="welcome-card" class="welcome-card liquid-glass">
@@ -92,17 +99,33 @@
             <button type="button" id="back-btn" class="liquid-glass-btn">Nuova Ricerca</button>
         </div>
 
-        <!-- Modale Info / Disclaimer Legale Completo -->
+        <!-- Modale Info / QR Condivisione Colleghi / Disclaimer Legale -->
         <div id="info-modal" class="modal">
             <div class="modal-content liquid-glass-modal">
                 <button type="button" id="close-modal-btn" aria-label="Chiudi">
                     <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
+
+                <!-- 1. PRIMA COSA IN ALTO: QR Code per passare l'app ai colleghi -->
+                <div class="qr-share-card">
+                    <p class="qr-share-title">Passa l'app a un collega</p>
+                    <p class="qr-share-sub">Inquadra il QR con la fotocamera per aprire subito <strong>Scusi?</strong></p>
+                    <div class="qr-frame">
+                        <img src="qr-scusi.png" alt="QR Code Scusi?" class="qr-code-img">
+                    </div>
+                    <button type="button" id="copy-link-btn" class="copy-link-btn">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span id="copy-link-text">Copia Link</span>
+                    </button>
+                </div>
+
+                <!-- 2. Logo App, Versione e Crediti -->
                 <div class="modal-header">
                     <img src="icon-192.png" alt="Logo Scusi?" class="modal-logo">
                     <h2>Scusi?</h2>
-                    <p class="version">Versione 3.0.0 (Auto Dark Mode • Liquid Glass) • 2026</p>
+                    <p class="version">Versione 3.1.0 (Offline Ready • Liquid Glass) • 2026</p>
                 </div>
+
                 <div class="modal-body">
                     <p><strong>App progettata da Massimo Maggipinto per Marco Campedelli.</strong><br>Tutti i diritti sul codice sorgente riservati / All source code rights reserved.</p>
                     
@@ -134,6 +157,6 @@
             </div>
         </div>
     </div>
-    <script src="script.js?v=3.0"></script>
+    <script src="script.js?v=3.1"></script>
 </body>
 </html>
